@@ -67,7 +67,7 @@ def c_username():
             query_db(f"UPDATE read SET recipient = '{new_username}' WHERE recipient == '{username}'")
             query_db(f"UPDATE posts SET username = '{new_username}' WHERE username == '{username}'")
             try:
-                os.rename(f"/home/Hardope/mysite/static/{username}.jpg", f"/home/Hardope/mysite/static/{new_username}.jpg")
+                os.rename(os.getcwd()+ f"/static/{username}.jpg", os.getcwd()+ f"/static/{new_username}.jpg")
             except:
                 pass
             session['messenger'] = new_username
@@ -113,7 +113,7 @@ def me(query):
             gender = 3
         pic = session['messenger'].replace(" ", "_") + ".jpg"
         try:
-            with open(f"/home/Hardope/mysite/static/{pic}", "r") as file:
+            with open(os.getcwd()+ f"/static/{pic}", "r") as file:
                 img = 1
         except:
             img = 0
@@ -127,7 +127,7 @@ def me(query):
             if not file:
                 raise ValueError
             name = session['messenger'].replace(" ", "_")
-            file = file.save(f"/home/Hardope/mysite/static/{name}.jpg")
+            file = file.save(os.getcwd()+ f"/static/{name}.jpg")
         except:
             pass
         if gender == "male":
@@ -160,7 +160,7 @@ def detail(query):
     data = query_db(f"SELECT * FROM profile WHERE username is '{query}' LIMIT 1")
     pic = query.replace(" ", "_") + ".jpg"
     try:
-        with open(f"/home/Hardope/mysite/static/{pic}", "r") as file:
+        with open(os.getcwd() + f"/static/{pic}", "r") as file:
             img = 1
     except:
         img = 0
@@ -368,7 +368,7 @@ def logout():
     return redirect('/login')
 
 def query_db(text):
-    conn = sqlite3.connect("/home/Hardope/mysite/messenger.db")
+    conn = sqlite3.connect(os.getcwd()+ "/messenger.db")
     cursor = conn.cursor()
     cursor.execute(f"{text}")
     value = cursor.fetchall()
