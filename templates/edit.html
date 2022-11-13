@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+      <meta name="viewport" content="initial-scale=1, width=device-width">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+{% block body %}
+    <center>
+          {% if img == 0 %}
+               <img src="/static/favicon.ico" style="border-radius: 50%; width:10%">
+          {% else %}
+               <img src="/static/{{pic}}" style="border-radius: 50%; width:30%">
+          {% endif %}
+          <br>
+          <br>
+    </center>
+        <form action = "/me/{{username}}" method = "post" enctype="multipart/form-data">
+            <center>
+                About
+                    <textarea class="btn btn-outline-light" required name="about" maxlength="100" style="width:500px; height: 200px; border-radius: 20px;">{{about}}</textarea>
+            </center>
+            {% if gender == 0 %}
+                <input type="radio" id="male" name="gender" value="male" checked='checked' style="margin-left: 10%;">
+                <label for="male">Male</label><br>
+                <input type="radio" id="female" name="gender" value="female" style="margin-left: 10%;">
+                <label for="female">Female</label><br>
+                <br>
+            {% elif gender == 1 %}
+                <input type="radio" id="male" name="gender" value="Male" style="margin-left: 10%;">
+                <label for="male">Male</label><br>
+                <input type="radio" id="female" name="gender" value="Female" checked='checked' style="margin-left: 10%;">
+                <label for="female">Female</label><br>
+            {% else %}
+                <input type="radio" id="male" name="gender" value="Male" style="margin-left: 10%;">
+                <label for="male">Male</label><br>
+                <input type="radio" id="female" name="gender" value="Female" style="margin-left: 10%;">
+                <label for="female">Female</label><br>
+            {% endif %}
+               <input class="btn btn-outline-light" type="file" id="pic" name="pic" accept="image/*" value="">
+        <center>
+            <button  type="submit" id='button' class="btn btn-outline-light" data-mdb-ripple-color="dark" style="text-size: 60px; color: black; border: 0ch; margin-bottom: 2%; margin-left: 10%; border-radius: 10px 10px 10px 10px;  width: 200px; height: 50px;">Update Profile</button>
+        </center>
+      </form>
+        <center>
+            <a href="/change_username"><button  type="submit" id='button' class="btn btn-outline-light" data-mdb-ripple-color="dark" style="text-size: 60px; color: black; border: 0ch; margin-bottom: 2%; margin-left: 10%; border-radius: 10px 10px 10px 10px;  width: 200px; height: 50px;">Change Username</button></a>
+            <a href="/ch_password"><button  type="submit" id='button' class="btn btn-outline-light" data-mdb-ripple-color="dark" style="text-size: 60px; color: black; border: 0ch; margin-bottom: 2%; margin-left: 10%; border-radius: 10px 10px 10px 10px;  width: 200px; height: 50px;">Change Password</button></a>
+        </center>
+{% endblock %}
