@@ -67,7 +67,7 @@ def c_username():
             query_db(f"UPDATE read SET recipient = '{new_username}' WHERE recipient == '{username}'")
             query_db(f"UPDATE posts SET username = '{new_username}' WHERE username == '{username}'")
             try:
-                os.rename(os.getcwd()+ f"/static/{username}.jpg", os.getcwd()+ f"/static/{new_username}.jpg")
+                os.rename(f"/home/Hardope/mysite/static/{username}.jpg", f"/home/Hardope/mysite/static/{new_username}.jpg")
             except:
                 pass
             session['messenger'] = new_username
@@ -113,7 +113,7 @@ def me(query):
             gender = 3
         pic = session['messenger'].replace(" ", "_") + ".jpg"
         try:
-            with open(os.getcwd()+ f"/static/{pic}", "r") as file:
+            with open(f"/home/Hardope/mysite/static/{pic}", "r") as file:
                 img = 1
         except:
             img = 0
@@ -127,7 +127,7 @@ def me(query):
             if not file:
                 raise ValueError
             name = session['messenger'].replace(" ", "_")
-            file = file.save(os.getcwd()+ f"/static/{name}.jpg")
+            file = file.save(f"/home/Hardope/mysite/static/{name}.jpg")
         except:
             pass
         if gender == "male":
@@ -160,7 +160,7 @@ def detail(query):
     data = query_db(f"SELECT * FROM profile WHERE username is '{query}' LIMIT 1")
     pic = query.replace(" ", "_") + ".jpg"
     try:
-        with open(os.getcwd() + f"/static/{pic}", "r") as file:
+        with open(f"/home/Hardope/mysite/static/{pic}", "r") as file:
             img = 1
     except:
         img = 0
@@ -169,10 +169,18 @@ def detail(query):
 
 @app.route("/about")
 def about():
+    if not session.get("messenger"):
+        return redirect("/login")
+    if auth(session['messenger']) is not True:
+        return redirect("/login")
     return render_template("about.html", username=session['messenger'])
 
 @app.route("/news")
 def news():
+    if not session.get("messenger"):
+        return redirect("/login")
+    if auth(session['messenger']) is not True:
+        return redirect("/login")
     return render_template("news.html", username=session['messenger'])
 @app.route("/search", methods=["POST"])
 def search():
@@ -188,7 +196,8 @@ def search():
             if i[1] == session['messenger']:
                 continue
             users.append(i[1])
-        return render_template("index.html", username=session['messenger'], users=users, header="USERS")
+            users = sorted(set(users))
+        return render_template("index.html", username=session['messenger'], users=users)
 @app.route("/users")
 def index():
     if not session.get("messenger"):
@@ -202,7 +211,8 @@ def index():
             if i[1] == session['messenger']:
                 continue
             users.append(i[1])
-        return render_template("index.html", username=session['messenger'], users=users, header="USERS")
+        user = sorted(set(users))
+        return render_template("index.html", username=session['messenger'], users=user, header="USERS")
 @app.route("/")
 def home():
     if not session.get("messenger"):
@@ -222,8 +232,8 @@ def chats():
         a = 0
         users = []
         values = []
-        result = query_db(f"SELECT DISTINCT recipient FROM messages WHERE sender == '{session['messenger']}'")
-        results = query_db(f"SELECT DISTINCT sender FROM messages WHERE recipient == '{session['messenger']}'")
+        result = query_db(f"SELECT DISTINCT recipient FROM messages WHERE sender == '{session['messenger']}' ORDER BY time DESC")
+        results = query_db(f"SELECT DISTINCT sender FROM messages WHERE recipient == '{session['messenger']}' ORDER BY time DESC")
         for i in result:
             users.append(i[0])
             length = query_db(f"SELECT COUNT (*) FROM messages WHERE sender == '{session['messenger']}' AND recipient == '{i[0]}' OR recipient == '{session['messenger']}' AND sender == '{i[0]}'")[0][0]
@@ -236,10 +246,6 @@ def chats():
             else:
                 values.append("..")
             a+=1
-        for i in results:
-            if i[0] not in users:
-                users.append(i[0])
-                a+=1
         if a < 1:
             return redirect("/users")
         return render_template("index1.html", username=session['messenger'], users=users, header="Chats", values=values)
@@ -368,7 +374,7 @@ def logout():
     return redirect('/login')
 
 def query_db(text):
-    conn = sqlite3.connect(os.getcwd()+ "/messenger.db")
+    conn = sqlite3.connect("/home/Hardope/mysite/messenger.db")
     cursor = conn.cursor()
     cursor.execute(f"{text}")
     value = cursor.fetchall()
