@@ -29,16 +29,13 @@ def comment(query):
 
     else:
         new_comment = request.form.get('comment').strip()
-        try:
-            id1 = query_db("SELECT * FROM posts ORDER BY id DESC LIMIT 1")[0][0]
-            id2 = query_db("SELECT * FROM comments ORDER BY id DESC LIMIT 1")[0][0]
 
-            if id1 > id2:
-                id = id1
-            else:
-                id = id2
-        except:
-            id = query_db("SELECT * FROM posts ORDER BY id DESC LIMIT 1")[0][0]
+        id1 = query_db("SELECT * FROM posts ORDER BY id DESC LIMIT 1")[0][0]
+        id2 = query_db("SELECT * FROM comments ORDER BY id DESC LIMIT 1")[0][0]
+        id3 = query_db("SELECT * FROM posts ORDER BY id DESC LIMIT 1")[0][0]
+
+        id = max([id1, id2, id3])
+
         query_db(f"INSERT INTO comments VALUES ({int(query)}, {id + 1}, '{session['messenger']}', '{new_comment}', CURRENT_TIMESTAMP)")
         return redirect(f'/comment/{query}')
 

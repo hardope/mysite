@@ -5,6 +5,30 @@
 {% block body %}
 <script>
      document.addEventListener('DOMContentLoaded', function(){
+         let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+         function get_time(input) {
+            var currentTime = new Date()
+            var year = currentTime.getFullYear()
+            let initial = input.split(" ")
+            let time = initial[1]
+            let date = initial[0]
+            date = date.split("-")
+            time = time.slice(0, -3);
+            time = time.split(":")
+            time[0] = parseInt(time[0])+1
+            if (time[0] > 23){
+                time[0]-=23;
+            }
+            date[1] = months[parseInt(date[1]) - 1]
+            date.push(date.shift())
+            date = date.toString()
+            date = date.replace(year.toString(), "")
+            date = date.replace(",", " ")
+            time = time.toString()
+            time = time.replace(",", ':')
+            result = date + " " + time
+            return (result)
+        }
           let a = 1
           let url = window.location.origin
           let request = new XMLHttpRequest();
@@ -20,6 +44,11 @@
                          name.textContent = obj[1];
                          name.setAttribute('href', "/profile/" + obj[1])
                          body.appendChild(name)
+                         var time = document.createElement('p');
+                         time.setAttribute('style', 'margin-top: -10px;  font-size: 15px !important;')
+                         time.setAttribute('class', 'a')
+                         time.textContent = get_time(obj[3]);
+                         body.appendChild(time);
                          var tag = document.createElement('div');
                          tag.textContent = obj[2];
                          tag.setAttribute('class', 'div')
@@ -59,6 +88,7 @@
      }
      .a{
           margin-left: 55px;
+
      }
      .div{
           display: block;
@@ -100,7 +130,7 @@
           border-bottom-right-radius: 20px;
      }
  </style>
- <div>
+ <div style="margin-top: 35px">
      <form action="/posts/new">
           <button type="submit" style="border-radius: 10px; margin-left: 20%; height: 40px; border-color: rgb(224, 227, 229);">Create New Post</button>
      </form>

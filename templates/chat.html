@@ -212,13 +212,12 @@ h2 {
                     if (obj[0] === username ) {
                             var tag = document.createElement('p');
                             tag.textContent = obj[2]
-                            console.log(obj)
                             tag.setAttribute('class', 'from-me margin-b_none')
                             tag.setAttribute('style', 'font-size: 20px;')
                             body.appendChild(tag);
                             var date = document.createElement('small')
-                            date.textContent = obj[3]
-                            date.setAttribute('style', 'text-align: right; font-size: 5px')
+                            date.textContent = get_time(obj[3])
+                            date.setAttribute('style', 'text-align: right; font-size: 15px !important')
                             body.appendChild(date)
                     } else {
                             var tag = document.createElement('p');
@@ -227,8 +226,8 @@ h2 {
                             tag.setAttribute('style', 'font-size: 20px;')
                             body.appendChild(tag);
                             var date = document.createElement('small')
-                            date.textContent = obj[3]
-                            date.setAttribute('style', 'text-align: left; font-size: 5px')
+                            date.textContent = get_time(obj[3])
+                            date.setAttribute('style', 'text-align: left; font-size: 15px !important')
                             body.appendChild(date)
                     }
                 }
@@ -252,10 +251,9 @@ h2 {
                                 tag.setAttribute('style', 'font-size: 20px;')
                                 body.appendChild(tag);
                                 var date = document.createElement('small')
-                                date.textContent = newlist[i+1][3];
-                                date.setAttribute('style', 'text-align: right; font-size: 5px')
+                                date.textContent = get_time(newlist[i+1][3]);
+                                date.setAttribute('style', 'text-align: right; font-size: 15px !important')
                                 body.appendChild(date)
-                                get_time(newlist[i+1][3])
                             } else{
                                 var tag = document.createElement('p');
                                 tag.textContent = newlist[i+1][2];
@@ -263,8 +261,8 @@ h2 {
                                 tag.setAttribute('style', 'font-size: 20px;')
                                 body.appendChild(tag);
                                 var date = document.createElement('small')
-                                date.textContent = newlist[i+1][3];
-                                date.setAttribute('style', 'text-align: left; font-size: 5px')
+                                date.textContent = get_time(newlist[i+1][3]);
+                                date.setAttribute('style', 'text-align: left; font-size: 15px !important')
                                 body.appendChild(date)
                             }
                         }
@@ -275,15 +273,27 @@ h2 {
             }
         }
         function get_time(input) {
+            var currentTime = new Date()
+            var year = currentTime.getFullYear()
             let initial = input.split(" ")
             let time = initial[1]
             let date = initial[0]
             date = date.split("-")
+            time = time.slice(0, -3);
+            time = time.split(":")
+            time[0] = parseInt(time[0])+1
+            if (time[0] > 23){
+                time[0]-=23;
+            }
             date[1] = months[parseInt(date[1]) - 1]
             date.push(date.shift())
-            date.toString()
-            console.log(date)
-            console.log(time)
+            date = date.toString()
+            date = date.replace(year.toString(), "")
+            date = date.replace(",", " ")
+            time = time.toString()
+            time = time.replace(",", ':')
+            result = date + " " + time
+            return (result)
         }
         setInterval(refresh, 1000);
         document.querySelector('#submit').disabled = true;
