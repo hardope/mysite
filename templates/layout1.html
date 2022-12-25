@@ -80,7 +80,8 @@ function up(){
 }
 </script>
 
-<html style="font-size: 16px;" lang="en"><head>
+<html style="font-size: 16px;" lang="en">
+    <head>
     <link rel="icon" href="/static/icon.jpg" media="screen">
     <meta name="viewport" content="width=device-width, initial-scale=0.5">
     <meta charset="utf-8">
@@ -101,11 +102,12 @@ function up(){
 		"logo": "images/icon.png"
 }</script>
     <meta name="theme-color" content="#478ac9">
-    <meta property="og:title" content="index">
+    <meta property="og:title" content="Click Chat">
     <meta property="og:type" content="website">
+    <meta property="og:image" content="/static/icon.png">
   </head>
   <div style="position: fixed; margin-bottom: 1px; background-color: white; padding-right: 70px;padding-left: 40px;">
-  <body data-home-page="index.html" data-home-page-title="index" class="u-body u-stick-footer u-xl-mode" data-lang="en"><header class="u-clearfix u-header u-header" id="sec-2f22"><div class="u-clearfix u-sheet u-sheet-1">
+  <body data-home-page="Click Chat" data-home-page-title="Click Chat" class="u-body u-stick-footer u-xl-mode" data-lang="en"><header class="u-clearfix u-header u-header" id="sec-2f22"><div class="u-clearfix u-sheet u-sheet-1">
         <a href="/" class="u-image u-logo u-image-1" data-image-width="512" data-image-height="512">
           <img src="/static/icon.png" class="u-logo-image u-logo-image-1">
         </a>
@@ -128,7 +130,6 @@ function up(){
         <a href="/chats"  style="margin-right: 10px;">Chats</a>
         <a href="/users"  style="margin-right: 10px;">New Chat</a>
         <a href="/profile/{{username}}">Profile</a>
-      </div>
         <div id="mySidebar" class="sidebar" style="position: absolute;">
           <br>
           <br>
@@ -141,8 +142,8 @@ function up(){
           <a class="u-button-style u-nav-link" href="/profile/{{username}}">Profile</a>
         </div>
       </div></header>
-
-      <div style="margin-top: 150px;">
+        </div>
+      <div style="margin-top:130px">
 
         {% block body %}
         {% endblock %}
