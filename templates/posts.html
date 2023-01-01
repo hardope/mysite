@@ -4,6 +4,41 @@
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 {% block body %}
 <script>
+     let react = ""
+     function get_int(input){
+         num = ""
+        for (let i = 0; i < input.length; i++) {
+            if (input[i]== "🖤"){
+                break
+            } else{
+                num += input[i]
+            }
+        }
+        return parseInt(num)
+     }
+     function like(input){
+          let box = document.getElementById(input)
+
+          if (box.getAttribute('value') == "true") {
+               box.innerHTML = (get_int(box.textContent) - 1) + "🖤"
+               box.setAttribute('value', "false")
+               let url = window.location.origin
+               let request = new XMLHttpRequest();
+               let body = document.querySelector('#body');
+               request.open("GET", url + "/unlike/" + input);
+               request.send();
+
+          } else {
+               box.setAttribute('value', "true")
+               box.innerHTML = (get_int(box.textContent) + 1) + "❤️"
+               let url = window.location.origin
+               let request = new XMLHttpRequest();
+               let body = document.querySelector('#body');
+               request.open("GET", url + "/like/" + input);
+               request.send();
+
+          }
+     }
      document.addEventListener('DOMContentLoaded', function(){
          let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
          function get_time(input) {
@@ -57,8 +92,11 @@
                          container.setAttribute('class', 'container')
                          var react = document.createElement('p')
                          react.setAttribute('class', 'react')
+                         react.setAttribute('value', obj[5])
+                         react.setAttribute('id', obj[0])
                          react.setAttribute('style', 'inline')
-                         react.textContent = '❤️';
+                         react.setAttribute('onclick', 'like(' + obj[0] + ')')
+                         react.textContent = obj[4];
                          container.appendChild(react)
                          var link = document.createElement('a')
                          link.setAttribute('href', '/comment/' + obj[0])
@@ -74,6 +112,7 @@
                     }
                }
           }
+
      });
 </script>
 <style>

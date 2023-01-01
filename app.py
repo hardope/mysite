@@ -266,7 +266,14 @@ def post(query):
         if query == "new":
             return render_template("newpost.html")
         posts = query_db("SELECT * FROM posts ORDER BY id DESC")
-        return jsonify(posts)
+        new_post = []
+        for i in posts:
+            new = list(i)
+            value = likes(i[0])
+            for i in value:
+                new.append(i)
+            new_post.append(new)
+        return jsonify(new_post)
 @app.route("/new_post", methods=["POST"])
 def new_post():
     post = request.form.get("post")
@@ -369,6 +376,31 @@ def messages(query):
 def logout():
     session['messenger'] = None
     return redirect('/login')
+
+@app.route("/like/<query>", methods=['POST', 'GET'])
+def like(query):
+    username = session['messenger']
+    query_db(f"INSERT INTO likes VALUES ({int(query)}, '{username}')")
+    return "liked"
+
+@app.route("/unlike/<query>", methods=['POST', 'GET'])
+def unlike(query):
+    username = session['messenger']
+    query_db(f"DELETE FROM likes WHERE id == {int(query)} AND username == '{username}'")
+    return "unliked"
+
+def likes(query):
+    username = session['messenger']
+    num = int(query)
+    likes = query_db(f"SELECT * FROM likes WHERE id == {num}")
+    a = "🖤"
+    b = False
+    for i in likes:
+        if i[1] == username:
+            a = "❤️"
+            b = True
+            break
+    return ([f"{len(likes)}{a}", b])
 
 def query_db(text):
     conn = sqlite3.connect("/home/Hardope/mysite/messenger.db")
