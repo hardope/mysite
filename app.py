@@ -2,9 +2,10 @@ import sqlite3
 from flask import Flask, redirect, render_template, request, session, jsonify
 from flask_session import Session
 import os
+import sys
 
 app = Flask(__name__)
-app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 app.secret_key = "Messenger"
@@ -203,13 +204,23 @@ def index():
         return redirect("/login")
     else:
         users = []
+        image = []
         result = query_db("SELECT * FROM users")
         for i in result:
             if i[1] == session['messenger']:
                 continue
             users.append(i[1])
         user = sorted(set(users))
-        return render_template("index.html", username=session['messenger'], users=user, header="USERS")
+        for i in user:
+            pic = i.replace(" ", "_") + ".jpg"
+            try:
+                with open(f"/home/Hardope/mysite/static/{pic}", "r") as file:
+                    img = 1
+            except:
+                img = 0
+            image.append([pic, img])
+        length = len(users) - 1
+        return render_template("index.html", username=session['messenger'], users=user, picture=image, length=length)
 @app.route("/")
 def home():
     if not session.get("messenger"):
@@ -229,6 +240,7 @@ def chats():
         a = 0
         users = []
         values = []
+        image = []
         result = query_db(f"SELECT DISTINCT recipient FROM messages WHERE sender == '{session['messenger']}' ORDER BY time DESC")
         results = query_db(f"SELECT DISTINCT sender FROM messages WHERE recipient == '{session['messenger']}' ORDER BY time DESC")
         for i in result:
@@ -242,10 +254,17 @@ def chats():
                 values.append(f"{length - comp}")
             else:
                 values.append("..")
+            pic = i[0].replace(" ", "_") + ".jpg"
+            try:
+                with open(f"/home/Hardope/mysite/static/{pic}", "r") as file:
+                    img = 1
+            except:
+                img = 0
+            image.append([pic, img])
             a+=1
         if a < 1:
             return redirect("/users")
-        return render_template("index1.html", username=session['messenger'], users=users, header="Chats", values=values)
+        return render_template("index1.html", username=session['messenger'], users=users, values=values, picture=image)
 
 @app.route("/chat/<query>")
 def chat(query):
