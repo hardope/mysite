@@ -73,6 +73,42 @@
           border-bottom-right-radius: 20px;
      }
 </style>
+<script>
+    function get_int(input){
+         num = ""
+        for (let i = 0; i < input.length; i++) {
+            if (input[i]== "🖤"){
+                break
+            } else{
+                num += input[i]
+            }
+        }
+        return parseInt(num)
+     }
+     function like(input){
+          let box = document.getElementById(input)
+
+          if (box.getAttribute('value') == "true") {
+               box.innerHTML = (get_int(box.textContent) - 1) + "🖤"
+               box.setAttribute('value', "false")
+               let url = window.location.origin
+               let request = new XMLHttpRequest();
+               let body = document.querySelector('#body');
+               request.open("GET", url + "/unlike/" + input);
+               request.send();
+
+          } else {
+               box.setAttribute('value', "true")
+               box.innerHTML = (get_int(box.textContent) + 1) + "❤️"
+               let url = window.location.origin
+               let request = new XMLHttpRequest();
+               let body = document.querySelector('#body');
+               request.open("GET", url + "/like/" + input);
+               request.send();
+
+          }
+     }
+</script>
 <a class="a" href="/profile/{{current_post[2]}}">{{current_post[0]}}</a>
 <div class="c_post">
      {{current_post[1]}}
@@ -93,7 +129,7 @@
      {{i[3]}}
 </div>
 <div class="container">
-     <p class="react">❤️</p>
+     <p class="react" value="{{i[6]}}" id="{{i[1]}}" onclick="like({{i[1]}})">{{i[5]}}</p>
      <a href="/comment/{{i[1]}}"><p class="comment">comments</p></a>
 </div>
 {% endfor %}

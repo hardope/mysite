@@ -19,6 +19,13 @@ def comment(query):
     if request.method == "GET":
         pid = int(query)
         comments = query_db(f"SELECT * FROM comments WHERE pid == {pid} ORDER BY time DESC")
+        new_comments = []
+        for i in comments:
+            new = list(i)
+            value = likes(i[1])
+            for i in value:
+                new.append(i)
+            new_comments.append(new)
         try:
             c_post = query_db(f"SELECT * FROM posts where id == {pid}")[0]
             current_post = [c_post[1], c_post[2], c_post[0]]
@@ -26,18 +33,11 @@ def comment(query):
             c_post = query_db(f"SELECT * FROM comments WHERE id = {pid}")[0]
             current_post = [c_post[2], c_post[3], c_post[1]]
 
-        return render_template("comment.html", username=session['messenger'], comments=comments, current_post=current_post)
+        return render_template("comment.html", username=session['messenger'], comments=new_comments, current_post=current_post)
 
     else:
         new_comment = request.form.get('comment').strip()
-
-        id1 = query_db("SELECT * FROM posts ORDER BY id DESC LIMIT 1")[0][0]
-        id2 = query_db("SELECT * FROM comments ORDER BY id DESC LIMIT 1")[0][0]
-        id3 = query_db("SELECT * FROM posts ORDER BY id DESC LIMIT 1")[0][0]
-
-        id = max([id1, id2, id3])
-
-        query_db(f"INSERT INTO comments VALUES ({int(query)}, {id + 1}, '{session['messenger']}', '{new_comment}', CURRENT_TIMESTAMP)")
+        query_db(f"INSERT INTO comments VALUES ({int(query)}, {get_id()}, '{session['messenger']}', '{new_comment}', CURRENT_TIMESTAMP)")
         return redirect(f'/comment/{query}')
 
 @app.route("/change_username", methods=["GET", "POST"])
@@ -189,13 +189,23 @@ def search():
     else:
         search = request.form.get("search")
         users = []
+        image = []
         result = query_db(f"SELECT * FROM users WHERE username LIKE '%{search}%'")
         for i in result:
             if i[1] == session['messenger']:
                 continue
             users.append(i[1])
-            users = sorted(set(users))
-        return render_template("index.html", username=session['messenger'], users=users)
+        users = sorted(set(users))
+        for i in users:
+            pic = i.replace(" ", "_") + ".jpg"
+            try:
+                with open(f"/home/Hardope/mysite/static/{pic}", "r") as file:
+                    img = 1
+            except:
+                img = 0
+            image.append([pic, img])
+        length = len(users) - 1
+        return render_template("index.html", username=session['messenger'], users=users, picture=image, length=length)
 @app.route("/users")
 def index():
     if not session.get("messenger"):
@@ -298,21 +308,7 @@ def new_post():
     post = request.form.get("post")
     post = post.replace("'", "''")
     username = session['messenger']
-    try:
-        try:
-            id1 = query_db("SELECT * FROM posts ORDER BY id DESC LIMIT 1")[0][0]
-            id2 = query_db("SELECT * FROM comments ORDER BY pid DESC LIMIT 1")[0][0]
-
-            if id1 > id2:
-                id = id1
-            else:
-                id = id2
-        except:
-            id = query_db("SELECT * FROM posts ORDER BY id DESC LIMIT 1")[0][0]
-
-    except:
-        id = 0
-    query_db(f"INSERT INTO posts VALUES ({id + 1}, '{username}', '{post}', CURRENT_TIMESTAMP)")
+    query_db(f"INSERT INTO posts VALUES ({get_id()}, '{username}', '{post}', CURRENT_TIMESTAMP)")
     return redirect("/")
 
 @app.route("/api/<query>")
@@ -436,3 +432,18 @@ def auth(user):
         return True
     except:
         return False
+
+def get_id():
+    id = 0
+    try:
+        with open("/home/Hardope/mysite/id.txt") as file:
+            data = file.read()
+            id = int(data) + 1
+        with open("/home/Hardope/mysite/id.txt", 'w') as file:
+            file.write(f"{id}")
+    except:
+        id+=1
+        with open("/home/Hardope/mysite/id.txt", 'w') as file:
+            file.write(f"{id}")
+
+    return id
