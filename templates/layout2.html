@@ -17,22 +17,24 @@ html *
   z-index: 1; /* Stay on top */
   top: 0;
   left: -10;
-  background-color: #111; /* Black*/
-  overflow-x: hidden; /* Disable horizontal scroll */
+  background-color: rgba(214, 214, 214, 0.9);
+  overflow-x: hidden;
   padding-top: 0px;
-  transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+  transition: 1s;
+  border-radius: 15px;
 }
 
+a:link { text-decoration: none; color: rgb(27, 153, 207); !important}
+a:visited { text-decoration: none; color: rgb(27, 153, 207); !important}
+a:active { text-decoration: none; color: rgb(27, 153, 207); !important}
 /* The sidebar links */
 .sidebar a {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 25px;
-  color: #818181;
   display: block;
   transition: 0.3s;
 }
-
 /* When you mouse over the navigation links, change their color */
 .sidebar a:hover {
   color: #f1f1f1;
@@ -66,7 +68,7 @@ html *
 </style>
 <script>
   function openNav() {
-  document.getElementById("mySidebar").style.height = "500px";
+  document.getElementById("mySidebar").style.height = "800px";
 
 }
 
@@ -124,13 +126,14 @@ function up(){
         <div id="mySidebar" class="sidebar" style="position: absolute;">
           <br>
           <br>
-          <a href="javascript:void(0)" style="font-size: 300%" class="closebtn" onclick="closeNav()">x</a>
+          <a href="javascript:void(0)" style="font-size: 300%" class="closebtn" onclick="closeNav()">&#x2715;</a>
           <a class="u-button-style u-nav-link" href="/">Home</a>
           <a class="u-button-style u-nav-link" href="/chats">Chats</a>
           <a class="u-button-style u-nav-link" href="/users">New Chat</a>
           <a class="u-button-style u-nav-link" href="/news">Announcements</a></li>
           <a class="u-button-style u-nav-link" href="/about">About</a></li>
           <a class="u-button-style u-nav-link" href="/profile/{{username}}">Profile</a>
+          <a href="/logout" style="margin-top: 20px" class="u-border-2 u-border-hover-palette-1-base u-border-palette-1-base u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-1">Logout</a>
         </div>
       </div></header>
 
@@ -139,8 +142,7 @@ function up(){
         {% endblock %}
 
     <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-2dea" style="background-color: white;"><div class="u-clearfix u-sheet u-sheet-1">
-      <a href="/logout" class="u-border-2 u-border-hover-palette-1-base u-border-palette-1-base u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-1">Logout</a>
-      <button onclick="up()" style="border-radius: 25px; width: 40px; background-color: rgb(33, 173, 243);">&uparrow;;</button>
+      <button onclick="up()" style="border-radius: 25px; width: 40px; background-color: rgb(33, 173, 243); font-size: 30px !important;">⬆</button>
         <p class="u-small-text u-text u-text-variant u-text-1" style="color: black;">Copyright &#169; Click Chat</p>
         <p class="u-small-text u-text u-text-variant u-text-1" style="color: black;">Developed And Designed By Opeoluwa Adeyeri</p>
         <a href="/" class="u-image u-logo u-image-1" data-image-width="256" data-image-height="256">
