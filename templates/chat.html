@@ -311,11 +311,6 @@ h2 {
             let newmessage = new XMLHttpRequest();
             newmessage.open("POST", url + "/messages/{{recipient}}:" + message);
             newmessage.send();
-            request.onload = () => {
-                if (request.status !== 200) {
-                    alert("You Are Disconnected...")
-                }
-            }
             document.querySelector('#message').value = '';
             document.querySelector('#submit').disabled = true;
             return false
