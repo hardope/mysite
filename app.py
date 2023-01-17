@@ -10,6 +10,10 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 app.secret_key = "Messenger"
 
+@app.route("/sitemap")
+def site():
+    return render_template("sitemap.xml")
+
 @app.route("/comment/<query>", methods=["GET", "POST"])
 def comment(query):
     if not session.get("messenger"):
