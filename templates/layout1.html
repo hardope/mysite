@@ -70,8 +70,13 @@ a:active { text-decoration: none; color: rgb(27, 153, 207); !important}
 <script>
 document.addEventListener('DOMContentLoaded', function(){
     window.addEventListener('offline', (e) => {
-    // User is offline
-    alert("You are disconnected from the Internet");
+        // User is offline
+        alert("You are disconnected from the Internet");
+
+        window.addEventListener('online', (e) => {
+            // User is offline
+            alert("Your Internet Connection Was Restored");
+        })
     })
 });
 function openNav() {
