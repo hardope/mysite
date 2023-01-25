@@ -38,6 +38,8 @@ def comment(query):
             value = likes(i[1])
             for i in value:
                 new.append(i)
+            p_comments = query_db(f"SELECT COUNT(*) FROM comments WHERE pid == {new[1]}")
+            new.append(p_comments[0][0])
             new_comments.append(new)
         # fetch current post
         try:
@@ -295,7 +297,7 @@ def chats():
         users = []
         values = []
         image = []
-        # fetch and parse data 
+        # fetch and parse data
         result = query_db(f"SELECT DISTINCT recipient FROM messages WHERE sender == '{session['messenger']}' ORDER BY time DESC")
         results = query_db(f"SELECT DISTINCT sender FROM messages WHERE recipient == '{session['messenger']}' ORDER BY time DESC")
         for i in result:
@@ -340,8 +342,9 @@ def post(query):
         return redirect("/login")
     else:
         if query == "new":
-            return render_template("newpost.html")
-            # fetch and parse posts
+            return render_template("newpost.html", username=session['messenger'])
+        # fetch and parse posts
+
         posts = query_db("SELECT * FROM posts ORDER BY id DESC")
         new_post = []
         for i in posts:
@@ -349,6 +352,8 @@ def post(query):
             value = likes(i[0])
             for i in value:
                 new.append(i)
+            comments = query_db(f"SELECT COUNT(*) FROM comments WHERE pid = {new[0]}")
+            new.append(comments[0][0])
             new_post.append(new)
         return jsonify(new_post)
 
@@ -404,7 +409,7 @@ def login():
 # register new user
 @app.route("/register", methods=['POST', 'GET'])
 def register():
-    # collect and authenticate data then create user 
+    # collect and authenticate data then create user
     if request.method == "POST":
         username = request.form.get('username').strip()
         password = request.form.get('password').strip()
