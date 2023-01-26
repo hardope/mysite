@@ -88,9 +88,9 @@
      function like(input){
           let box = document.getElementById(input)
 
-          if (box.getAttribute('value') == "true") {
+          if (box.getAttribute('value') == "True") {
                box.innerHTML = (get_int(box.textContent) - 1) + "🖤"
-               box.setAttribute('value', "false")
+               box.setAttribute('value', "False")
                let url = window.location.origin
                let request = new XMLHttpRequest();
                let body = document.querySelector('#body');
@@ -98,7 +98,7 @@
                request.send();
 
           } else {
-               box.setAttribute('value', "true")
+               box.setAttribute('value', "True")
                box.innerHTML = (get_int(box.textContent) + 1) + "❤️"
                let url = window.location.origin
                let request = new XMLHttpRequest();
@@ -109,7 +109,7 @@
           }
      }
 </script>
-<a class="a" href="/profile/{{current_post[2]}}">{{current_post[0]}}</a>
+<a class="a" href="/profile/{{current_post[0]}}">{{current_post[0]}}</a>
 <div class="c_post">
      {{current_post[1]}}
 </div>

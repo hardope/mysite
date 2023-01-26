@@ -194,13 +194,24 @@ def detail(query):
     # collect user data
     data = query_db(f"SELECT * FROM profile WHERE username is '{query}' LIMIT 1")
     pic = query.replace(" ", "_") + ".jpg"
+    p_posts = query_db(f"SELECT * FROM posts WHERE username == '{query}' ORDER BY time DESC")
+    f_posts = []
+    for i in p_posts:
+        new = list(i)
+        # fetch likes for each post
+        value = likes(i[0])
+        for i in value:
+            new.append(i)
+        p_comments = query_db(f"SELECT COUNT(*) FROM comments WHERE pid == {new[0]}")
+        new.append(p_comments[0][0])
+        f_posts.append(new)
     try:
         # check if profile picture is present
         with open(f"/home/Hardope/mysite/static/{pic}", "r") as file:
             img = 1
     except:
         img = 0
-    return render_template('profile.html', username=session['messenger'], data=data, user=query, pic=pic, img=img)
+    return render_template('profile.html', username=session['messenger'], data=data, user=query, pic=pic, img=img, posts=f_posts)
 
 # About website
 @app.route("/about")
@@ -447,7 +458,9 @@ def messages(query):
         # collect data and insert into database
         recipient, message = query.strip().split(':')
         message = message.replace("'", "''")
-        query_db(f"INSERT INTO messages VALUES ('{session['messenger']}', '{recipient}', '{message}', CURRENT_TIMESTAMP)")
+        for i in ['#', '?', '/']:
+            message.replace(i, f"/n{i}")
+        query_db("INSERT INTO messages VALUES ('{0}', '{1}', '{2}', CURRENT_TIMESTAMP)".format(session['messenger'], recipient, message))
         return "Sent"
 
 # logout
