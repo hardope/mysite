@@ -21,6 +21,7 @@ def site():
     return render_template("sitemap.xml")
 
 # Display and store new comments
+# Display and store new comments
 @app.route("/comment/<query>", methods=["GET", "POST"])
 def comment(query):
     if not session.get("messenger"):
@@ -40,23 +41,49 @@ def comment(query):
                 new.append(i)
             p_comments = query_db(f"SELECT COUNT(*) FROM comments WHERE pid == {new[1]}")
             new.append(p_comments[0][0])
+            pic_list = get_pic()
+            if f"{new[1]}" in pic_list:
+                new.append("True")
+            else:
+                new.append("False")
             new_comments.append(new)
         # fetch current post
         try:
             # If current post is a main post
             c_post = query_db(f"SELECT * FROM posts where id == {pid}")[0]
-            current_post = [c_post[1], c_post[2], c_post[0]]
+            pic_list = get_pic()
+            if f"{pid}" in pic_list:
+                pic = "True"
+            else:
+                pic = "False"
+            current_post = [c_post[1], c_post[2], c_post[0], pic, pid]
         except:
+            pic_list = get_pic()
             #if current post is a comment
             c_post = query_db(f"SELECT * FROM comments WHERE id = {pid}")[0]
-            current_post = [c_post[2], c_post[3], c_post[1]]
+            if f"{pid}" in pic_list:
+                pic = "True"
+            else:
+                pic = "False"
+            current_post = [c_post[2], c_post[3], c_post[1], pic, pid]
 
         return render_template("comment.html", username=session['messenger'], comments=new_comments, current_post=current_post)
 
     else:
         # collect and store comments from form
         new_comment = request.form.get('comment').strip()
-        query_db(f"INSERT INTO comments VALUES ({int(query)}, {get_id()}, '{session['messenger']}', '{new_comment}', CURRENT_TIMESTAMP)")
+        pid = get_id()
+        try:
+            # Collect and update picture if provided
+            file = request.files['pic']
+            if not file:
+                raise ValueError
+            file = file.save(f"/home/Hardope/mysite/static/{pid}.jpg")
+            with open("/home/Hardope/mysite/pic.txt", "a") as file:
+                file.write(f"{pid}\n")
+        except:
+            pass
+        query_db(f"INSERT INTO comments VALUES ({int(query)}, {pid}, '{session['messenger']}', '{new_comment}', CURRENT_TIMESTAMP)")
         return redirect(f'/comment/{query}')
 
 # change username
@@ -204,6 +231,11 @@ def detail(query):
             new.append(i)
         p_comments = query_db(f"SELECT COUNT(*) FROM comments WHERE pid == {new[0]}")
         new.append(p_comments[0][0])
+        pic_list = get_pic()
+        if f"{new[0]}" in pic_list:
+            new.append("True")
+        else:
+            new.append("False")
         f_posts.append(new)
     try:
         # check if profile picture is present
