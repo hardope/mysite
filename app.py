@@ -358,6 +358,7 @@ def post(query):
 
         posts = query_db("SELECT * FROM posts ORDER BY id DESC")
         new_post = []
+        pic_list = get_pic()
         for i in posts:
             new = list(i)
             value = likes(i[0])
@@ -365,6 +366,10 @@ def post(query):
                 new.append(i)
             comments = query_db(f"SELECT COUNT(*) FROM comments WHERE pid = {new[0]}")
             new.append(comments[0][0])
+            if f"{new[0]}" in pic_list:
+                new.append("True")
+            else:
+                new.append("False")
             new_post.append(new)
         return jsonify(new_post)
 
@@ -375,6 +380,19 @@ def new_post():
     post = request.form.get("post")
     post = post.replace("'", "''")
     username = session['messenger']
+    pid = get_id()
+    try:
+        # Collect and update picture if provided
+        file = request.files['pic']
+        if not file:
+            raise ValueError
+        file = file.save(f"/home/Hardope/mysite/static/{pid}.jpg")
+        with open("/home/Hardope/mysite/pic.txt", "a") as file:
+            file.write(f"{pid}\n")
+    except:
+        pass
+    query_db(f"INSERT INTO posts VALUES ({pid}, '{username}', '{post}', CURRENT_TIMESTAMP)")
+    return redirect("/")
     query_db(f"INSERT INTO posts VALUES ({get_id()}, '{username}', '{post}', CURRENT_TIMESTAMP)")
     return redirect("/")
 
@@ -530,3 +548,12 @@ def get_id():
             file.write(f"{id}")
 
     return id
+
+def get_pic():
+    with open("/home/Hardope/mysite/pic.txt") as file:
+
+        data = file.read()
+        data = data.replace("\n", " ")
+        data = data.split(" ")
+        data = data[:-1]
+        return data

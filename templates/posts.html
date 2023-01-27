@@ -88,6 +88,14 @@
                          tag.textContent = obj[2];
                          tag.setAttribute('class', 'div')
                          body.appendChild(tag);
+                         if (obj[7] === "True"){
+                              let link = document.createElement('a');
+                              link.setAttribute("href", '/static/'+ obj[0] +'.jpg')
+                              var pic = document.createElement('img');
+                              pic.setAttribute('src', '/static/'+ obj[0] +'.jpg')
+                              link.appendChild(pic)
+                              body.appendChild(link)
+                         }
                          var container = document.createElement('div');
                          container.setAttribute('class', 'container')
                          var react = document.createElement('p')
@@ -116,11 +124,24 @@
      });
 </script>
 <style>
+     img{
+          margin-top: -10px;
+          width: vw - 30;
+          height: auto;
+          min-height: 50px;
+          margin-left: 20px;
+          margin-right: 20px;
+          max-width: 700px;
+          border-top-right-radius: 20px;
+          border-top-left-radius: 20px;
+          padding: 10px 10px 10px 10px; 
+     }
      .container{
           display: flex;
           width: vw-40;
           margin-left: 20px;
           margin-right: 20px;
+          margin-top: -10px;
      }
      html {
           scroll-behavior: smooth;
