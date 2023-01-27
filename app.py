@@ -71,6 +71,7 @@ def comment(query):
 
     else:
         # collect and store comments from form
+        value = 0
         new_comment = request.form.get('comment').strip()
         pid = get_id()
         try:
@@ -81,9 +82,13 @@ def comment(query):
             file = file.save(f"/home/Hardope/mysite/static/{pid}.jpg")
             with open("/home/Hardope/mysite/pic.txt", "a") as file:
                 file.write(f"{pid}\n")
+            value = 1
         except:
             pass
-        query_db(f"INSERT INTO comments VALUES ({int(query)}, {pid}, '{session['messenger']}', '{new_comment}', CURRENT_TIMESTAMP)")
+        if new_comment != "":
+            value = 1
+        if value != 0:
+            query_db(f"INSERT INTO comments VALUES ({int(query)}, {pid}, '{session['messenger']}', '{new_comment}', CURRENT_TIMESTAMP)")
         return redirect(f'/comment/{query}')
 
 # change username
@@ -409,6 +414,7 @@ def post(query):
 @app.route("/new_post", methods=["POST"])
 def new_post():
     # collect neew post from form and insert ti database
+    value = 0
     post = request.form.get("post")
     post = post.replace("'", "''")
     username = session['messenger']
@@ -421,11 +427,13 @@ def new_post():
         file = file.save(f"/home/Hardope/mysite/static/{pid}.jpg")
         with open("/home/Hardope/mysite/pic.txt", "a") as file:
             file.write(f"{pid}\n")
+        value = 1
     except:
         pass
-    query_db(f"INSERT INTO posts VALUES ({pid}, '{username}', '{post}', CURRENT_TIMESTAMP)")
-    return redirect("/")
-    query_db(f"INSERT INTO posts VALUES ({get_id()}, '{username}', '{post}', CURRENT_TIMESTAMP)")
+    if post != "":
+        value = 1
+    if value != 0:
+        query_db(f"INSERT INTO posts VALUES ({pid}, '{username}', '{post}', CURRENT_TIMESTAMP)")
     return redirect("/")
 
 # api to collect and refresh messages
