@@ -74,11 +74,14 @@
                if (request.status === 200) {
                     let body = document.querySelector('#body');
                     for (let obj of JSON.parse(request.response)) {
+                         var name_container = document.createElement('div')
+                         name_container.setAttribute('class', 'name_container')
                          var name = document.createElement('a');
                          name.setAttribute('class', 'a')
                          name.textContent = obj[1];
                          name.setAttribute('href', "/profile/" + obj[1])
-                         body.appendChild(name)
+                         name_container.appendChild(name)
+                         body.appendChild(name_container)
                          var time = document.createElement('p');
                          time.setAttribute('style', 'margin-top: -10px;  font-size: 15px !important;')
                          time.setAttribute('class', 'a')
@@ -111,7 +114,7 @@
                          var comment = document.createElement('p')
                          comment.setAttribute('class', 'comment')
                          comment.setAttribute('style', 'inline')
-                         comment.textContent = obj[6] + ' Comments';
+                         comment.textContent = obj[6] + ' 💬';
                          link.appendChild(comment)
                          container.appendChild(link)
                          body.appendChild(container)
@@ -124,74 +127,66 @@
      });
 </script>
 <style>
+     .name_container{
+          max-width: 750px;
+          width: 100vw;
+          border-top: solid;
+          border-width: 1px;
+     }
      img{
           margin-top: -10px;
-          width: 96vw;
+          width: 100vw;
           height: auto;
           min-height: 50px;
-          margin-left: 12px;
-          margin-right: 20px;
-          max-width: 700px;
-          padding: 10px 10px 10px 10px;
+          max-width: 750px;
      }
      .container{
+          max-width: 750px;
           display: flex;
-          width: vw-40;
-          margin-left: 20px;
-          margin-right: 20px;
-          margin-top: -10px;
+          border-top: solid;
+          border-width: 1px;
      }
      html {
           scroll-behavior: smooth;
      }
      .a{
           margin-left: 55px;
-
      }
      .div{
           display: block;
-          background-color: rgb(212, 214, 215);
-          width: vw - 40;
+          width: 100vw;
           height: auto;
           min-height: 50px;
-          margin-left: 20px;
-          margin-right: 20px;
-          max-width: 700px;
-          border-top-right-radius: 20px;
-          border-top-left-radius: 20px;
-          padding: 10px 10px 10px 10px;
+          max-width: 750px;
+          padding: 20px 20px 20px 20px;
           text-align: center;
           font-size: 20px;
           word-wrap: break-word;
      }
      .react{
-          margin-bottom: 30px;
           height: 50px;
-          width: 46vw;
+          width: 50vw;
+          align-self: center;
           max-width: 345px;
-          padding: 5px 5px 5px 5px;
           text-align: center;
           display: block;
-          background-color: rgb(27, 153, 207);
-          border-bottom-left-radius: 20px;
+          border-right: solid;
+          border-width: 1px;
+          margin-left: 10px;
      }
      .comment{
-          margin-left: 10px;
-          margin-bottom: 30px;
           height: 50px;
-          width: 46vw;
+          width: 50vw;
+          align-self: center;
           max-width: 345px;
-          padding: 5px 5px 5px 5px;
           text-align: center;
           display: block;
-          background-color: rgb(162, 162, 162);
-          border-bottom-right-radius: 20px;
      }
  </style>
  <script>
       var a = 0;
   </script>
- <div style="margin-top: 35px">
+ <div style="margin-top: 35px; margin-bottom: 20px;">
      <form action="/posts/new">
           <button type="submit" style="border-radius: 10px; margin-left: 20%; height: 40px; border-color: rgb(224, 227, 229);">Create New Post</button>
      </form>

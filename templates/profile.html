@@ -41,37 +41,24 @@ function like(input){
 }
 </script>
 <style>
-    img{
-          margin-top: -10px;
-          width: 96vw;
-          height: auto;
-          min-height: 50px;
-          margin-left: 12px;
-          margin-right: 20px;
-          max-width: 700px;
-          padding: 10px 10px 10px 10px;
+    .name_container{
+          max-width: 750px;
+          width: 100vw;
+          border-top: solid;
+          border-width: 1px;
      }
-    .c_post{
-          display: block;
-          background-color: rgb(212, 214, 215);
-          width: vw - 40;
+     img{
+          margin-top: -10px;
+          width: 100vw;
           height: auto;
           min-height: 50px;
-          margin-left: 20px;
-          margin-right: 20px;
-          max-width: 700px;
-          border-radius: 20px;
-          margin-bottom: 20px;
-          padding: 10px 10px 10px 10px;
-          text-align: center;
-          font-size: 20px;
-          word-wrap: break-word;
+          max-width: 750px;
      }
      .container{
+          max-width: 750px;
           display: flex;
-          width: vw-40;
-          margin-left: 20px;
-          margin-right: 20px;
+          border-top: solid;
+          border-width: 1px;
      }
      html {
           scroll-behavior: smooth;
@@ -81,42 +68,33 @@ function like(input){
      }
      .div{
           display: block;
-          background-color: rgb(212, 214, 215);
-          width: vw - 40;
+          width: 100vw;
           height: auto;
           min-height: 50px;
-          margin-left: 20px;
-          margin-right: 20px;
-          max-width: 700px;
-          border-top-right-radius: 20px;
-          border-top-left-radius: 20px;
-          padding: 10px 10px 10px 10px;
+          max-width: 750px;
+          padding: 20px 20px 20px 20px;
           text-align: center;
           font-size: 20px;
           word-wrap: break-word;
      }
      .react{
-          margin-bottom: 30px;
           height: 50px;
-          width: 46vw;
+          width: 50vw;
+          align-self: center;
           max-width: 345px;
-          padding: 5px 5px 5px 5px;
           text-align: center;
           display: block;
-          background-color: rgb(27, 153, 207);
-          border-bottom-left-radius: 20px;
+          border-right: solid;
+          border-width: 1px;
+          margin-left: 10px;
      }
      .comment{
-          margin-left: 10px;
-          margin-bottom: 30px;
           height: 50px;
-          width: 46vw;
+          width: 50vw;
+          align-self: center;
           max-width: 345px;
-          padding: 5px 5px 5px 5px;
           text-align: center;
           display: block;
-          background-color: rgb(162, 162, 162);
-          border-bottom-right-radius: 20px;
      }
 </style>
     <center>
@@ -146,7 +124,9 @@ function like(input){
         </form>
     {% endif %}
     {% for i in posts %}
+    <div class="name_container">
         <a class="a" href="/profile/{{i[1]}}">{{i[1]}}</a>
+    </div>
         <div class="div">
             {{i[2]}}
         </div>
@@ -157,7 +137,7 @@ function like(input){
         {% endif %}
         <div class="container">
              <p class="react" value="{{i[5]}}" id="{{i[0]}}" onclick="like({{i[0]}})">{{i[4]}}</p>
-             <a href="/comment/{{i[0]}}"><p class="comment">{{i[6]}} Comments</p></a>
+             <a href="/comment/{{i[0]}}"><p class="comment">{{i[6]}} 💬</p></a>
         </div>
     {% endfor %}
 {% endblock %}}
