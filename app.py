@@ -445,8 +445,8 @@ def api(query):
         return redirect("/login")
     else:
         # collect and parse data
-        length = query_db(f"SELECT COUNT (*) FROM messages WHERE sender == '{session['messenger']}' AND recipient == '{query}' OR recipient == '{session['messenger']}' AND sender == '{query}'")
-        messages = query_db(f"SELECT * FROM messages WHERE sender == '{session['messenger']}' AND recipient == '{query}' OR recipient == '{session['messenger']}' AND sender == '{query}'")
+        length = query_db(f"SELECT COUNT (*) FROM chats WHERE sender == '{session['messenger']}' AND recipient == '{query}' OR recipient == '{session['messenger']}' AND sender == '{query}'")
+        messages = query_db(f"SELECT * FROM chats WHERE sender == '{session['messenger']}' AND recipient == '{query}' OR recipient == '{session['messenger']}' AND sender == '{query}'")
         length = length[0][0]
         check = query_db(f"SELECT id FROM read WHERE sender == '{session['messenger']}' AND recipient == '{query}'")
         if len(check) > 0:
@@ -514,11 +514,13 @@ def messages(query):
         return redirect("/login")
     else:
         # collect data and insert into database
-        recipient, message = query.strip().split(':')
+        recipient = query.strip()
+        message = request.form.get('message').strip()
         message = message.replace("'", "''")
         for i in ['#', '?', '/']:
             message.replace(i, f"/n{i}")
-        query_db("INSERT INTO messages VALUES ('{0}', '{1}', '{2}', CURRENT_TIMESTAMP)".format(session['messenger'], recipient, message))
+        id = query_db("SELECT id FROM chats ORDER BY id DESC LIMIT 1")[0][0] + 1
+        query_db("INSERT INTO chats VALUES ({0}, '{1}', '{2}', '{3}', CURRENT_TIMESTAMP)".format(id, session['messenger'], recipient, message))
         return "Sent"
 
 # logout
