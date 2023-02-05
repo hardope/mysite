@@ -115,8 +115,8 @@ def c_username():
         except:
             # Update Data
             query_db(f"UPDATE users SET username = '{new_username}' WHERE username == '{username}'")
-            query_db(f"UPDATE messages SET sender = '{new_username}' WHERE sender == '{username}'")
-            query_db(f"UPDATE messages SET recipient = '{new_username}' WHERE recipient == '{username}'")
+            query_db(f"UPDATE chats SET sender = '{new_username}' WHERE sender == '{username}'")
+            query_db(f"UPDATE chats SET recipient = '{new_username}' WHERE recipient == '{username}'")
             query_db(f"UPDATE profile SET username = '{new_username}' WHERE username == '{username}'")
             query_db(f"UPDATE read SET sender = '{new_username}' WHERE sender == '{username}'")
             query_db(f"UPDATE read SET recipient = '{new_username}' WHERE recipient == '{username}'")
@@ -346,11 +346,11 @@ def chats():
         values = []
         image = []
         # fetch and parse data
-        result = query_db(f"SELECT DISTINCT recipient FROM messages WHERE sender == '{session['messenger']}' ORDER BY time DESC")
-        results = query_db(f"SELECT DISTINCT sender FROM messages WHERE recipient == '{session['messenger']}' ORDER BY time DESC")
+        result = query_db(f"SELECT DISTINCT recipient FROM chats WHERE sender == '{session['messenger']}' ORDER BY time DESC")
+        results = query_db(f"SELECT DISTINCT sender FROM chats WHERE recipient == '{session['messenger']}' ORDER BY time DESC")
         for i in result:
             users.append(i[0])
-            length = query_db(f"SELECT COUNT (*) FROM messages WHERE sender == '{session['messenger']}' AND recipient == '{i[0]}' OR recipient == '{session['messenger']}' AND sender == '{i[0]}'")[0][0]
+            length = query_db(f"SELECT COUNT (*) FROM chats WHERE sender == '{session['messenger']}' AND recipient == '{i[0]}' OR recipient == '{session['messenger']}' AND sender == '{i[0]}'")[0][0]
             try:
                 comp = query_db(f"SELECT id FROM read WHERE sender == '{session['messenger']}' AND recipient == '{i[0]}'")[0][0]
             except:
