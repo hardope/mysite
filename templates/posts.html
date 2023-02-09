@@ -75,15 +75,23 @@
                     let body = document.querySelector('#body');
                     for (let obj of JSON.parse(request.response)) {
                          var name_container = document.createElement('div')
+                         var name_link = document.createElement('a')
                          name_container.setAttribute('class', 'name_container')
-                         var name = document.createElement('a');
-                         name.setAttribute('class', 'a')
+                         name_link.setAttribute('style', 'display: inline-flex;')
+                         pic = document.createElement('img')
+                         pic.setAttribute('src', '/static/favicon.ico')
+                         pic.setAttribute('style', 'width: 50px; border-radius: 25px; margin-top: 20px; margin-left: 30px')
+                         name_link.appendChild(pic)
+                         var name = document.createElement('div');
+                         name.setAttribute('class', 'p')
                          name.textContent = obj[1];
-                         name.setAttribute('href', "/profile/" + obj[1])
-                         name_container.appendChild(name)
+                         name_link.setAttribute('href', "/profile/" + obj[1])
+                         name.setAttribute('style', 'margin-left: 10px; margin-top: 30px;')
+                         name_link.appendChild(name)
+                         name_container.appendChild(name_link)
                          body.appendChild(name_container)
                          var time = document.createElement('p');
-                         time.setAttribute('style', 'margin-top: -10px;  font-size: 15px !important;')
+                         time.setAttribute('style', 'margin-top: -10px; margin-left: 30px; font-size: 15px !important;')
                          time.setAttribute('class', 'a')
                          time.textContent = get_time(obj[3]);
                          body.appendChild(time);
@@ -162,6 +170,7 @@
           text-align: center;
           font-size: 20px;
           word-wrap: break-word;
+          margin-top: -30px;
      }
      .react{
           height: 50px;
