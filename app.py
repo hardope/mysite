@@ -109,12 +109,12 @@ def c_username():
         # Authenticate Data
         try:
             # make sure New username is not Taken by another user
-            a = query_db(f"SELECT * FROM users WHERE username == '{new_username}'")
+            a = query_db(f"SELECT * FROM user WHERE username == '{new_username}'")
             a = a[0][1]
             return render_template("change.html", username=session['messenger'], error="Username Already Taken")
         except:
             # Update Data
-            query_db(f"UPDATE users SET username = '{new_username}' WHERE username == '{username}'")
+            query_db(f"UPDATE user SET username = '{new_username}' WHERE username == '{username}'")
             query_db(f"UPDATE chats SET sender = '{new_username}' WHERE sender == '{username}'")
             query_db(f"UPDATE chats SET recipient = '{new_username}' WHERE recipient == '{username}'")
             query_db(f"UPDATE profile SET username = '{new_username}' WHERE username == '{username}'")
@@ -146,9 +146,9 @@ def ch_password():
         new_password = request.form.get("new_password")
         try:
             # update data if original password is correct
-            a = query_db(f"SELECT * FROM users WHERE username == '{username}' AND password == '{password}'")
+            a = query_db(f"SELECT * FROM user WHERE username == '{username}' AND password == '{password}'")
             a = a[0][1]
-            query_db(f"UPDATE users SET password = '{new_password}' WHERE username == '{username}'")
+            query_db(f"UPDATE user SET password = '{new_password}' WHERE username == '{username}'")
             return redirect("/")
         except:
             return render_template("ch_password.html", username=session['messenger'], error="Wrong Password")
@@ -280,7 +280,7 @@ def search():
         search = request.form.get("search")
         users = []
         image = []
-        result = query_db(f"SELECT * FROM users WHERE username LIKE '%{search}%'")
+        result = query_db(f"SELECT * FROM user WHERE username LIKE '%{search}%'")
         for i in result:
             if i[1] == session['messenger']:
                 continue
@@ -307,7 +307,7 @@ def index():
     else:
         users = []
         image = []
-        result = query_db("SELECT * FROM users")
+        result = query_db("SELECT * FROM user")
         for i in result:
             if i[1] == session['messenger']:
                 continue
@@ -464,7 +464,7 @@ def login():
         password = request.form.get('password').strip()
 
         try:
-            users = query_db(f"SELECT * FROM users WHERE username == '{username}' AND password == '{password}'")
+            users = query_db(f"SELECT * FROM user WHERE username == '{username}' AND password == '{password}'")
         except:
             return render_template("login.html", error="Invalid Username Or Password")
         if len(users) < 1:
@@ -489,19 +489,19 @@ def register():
             pass
         else:
             return render_template("register.html", error="Password does not match confirmation")
-        users = query_db(f"SELECT * FROM users WHERE username == '{username}'")
+        users = query_db(f"SELECT * FROM user WHERE username == '{username}'")
         if not users:
             pass
         else:
             return render_template("register.html", error="Username Unavailable")
         try:
-            available_id = query_db("SELECT id FROM users ORDER BY id DESC LIMIT 1")[0][0]
+            available_id = query_db("SELECT id FROM user ORDER BY id DESC LIMIT 1")[0][0]
         except:
             available_id = 0
 
-        query_db(f"INSERT INTO users (id, username, password) VALUES ({int(available_id + 1)}, '{username}', '{password}')")
+        query_db(f"INSERT INTO user (id, username, password) VALUES ({int(available_id + 1)}, '{username}', '{password}')")
         session['messenger'] = username
-        return redirect("/users")
+        return redirect("/")
     else:
         return render_template("register.html", error="")
 
@@ -568,7 +568,7 @@ def query_db(text):
 
 # authenticate user
 def auth(user):
-    a = query_db(f"SELECT * FROM users WHERE username == '{user}'")
+    a = query_db(f"SELECT * FROM user WHERE username == '{user}'")
     try:
         a = a[0][1]
         return True
