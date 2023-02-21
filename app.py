@@ -121,6 +121,8 @@ def c_username():
             query_db(f"UPDATE read SET sender = '{new_username}' WHERE sender == '{username}'")
             query_db(f"UPDATE read SET recipient = '{new_username}' WHERE recipient == '{username}'")
             query_db(f"UPDATE posts SET username = '{new_username}' WHERE username == '{username}'")
+            query_db(f"UPDATE likes SET username = '{new_username}' WHERE username == '{username}'")
+            query_db(f"UPDATE comments SET username = '{new_username}' WHERE username == '{username}'")
             try:
                 # rename picture to new username if it exists
                 os.rename(f"/home/Hardope/mysite/static/{username}.jpg", f"/home/Hardope/mysite/static/{new_username}.jpg")
