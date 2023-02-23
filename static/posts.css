@@ -1,0 +1,56 @@
+.name_container{
+    max-width: 750px;
+    width: 100vw;
+    border-top: solid;
+    border-width: 1px;
+}
+img{
+    margin-top: -10px;
+    width: 100vw;
+    height: auto;
+    min-height: 50px;
+    max-width: 750px;
+}
+.container{
+    max-width: 750px;
+    display: flex;
+    border-top: solid;
+    border-width: 1px;
+}
+html {
+    scroll-behavior: smooth;
+}
+.a{
+    margin-left: 55px;
+}
+.div{
+    display: block;
+    width: 100vw;
+    height: auto;
+    min-height: 50px;
+    max-width: 750px;
+    padding: 20px 20px 20px 20px;
+    text-align: center;
+    font-size: 20px;
+    word-wrap: break-word;
+    margin-top: -30px;
+}
+.react{
+    height: 50px;
+    width: 50vw;
+    align-self: center;
+    max-width: 345px;
+    text-align: center;
+    display: block;
+    border-right: solid;
+    border-width: 1px;
+    margin-left: 10px;
+}
+.comment{
+    height: 50px;
+    width: 50vw;
+    align-self: center;
+    max-width: 345px;
+    text-align: center;
+    display: block;
+}

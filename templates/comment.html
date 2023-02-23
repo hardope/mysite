@@ -5,15 +5,30 @@
 
 {% block body %}
 <script>
-     function validate(){
-           if(document.getElementById("pic").value != "") {
-                 let label = document.getElementById("pic_label")
-                 label.style.background = "green";
-           }
-     }
- </script>
+function validate() {
+   if(document.getElementById("pic").value != "") {
+        let label = document.getElementById("pic_label")
+        label.style.background = "green";
+   }
+}
+</script>
+<link rel="stylesheet" href="/static/posts.css">
+<script src="/static/like.js"></script>
+
+<a class="a" href="/profile/{{current_post[0]}}" style="display: inline-flex">
+    <img src="/static/favicon.ico" style="width: 50px; border-radius: 25px; margin-top: 20px; margin-left: 0px">
+    <div style="margin-left: 10px; margin-top: 30px;">
+        {{current_post[0]}}
+    </div>
+</a>
+<div class="div">
+     {{current_post[1]}}
+</div>
+{% if current_post[3] == "True" %}
+     <img src="/static/{{current_post[4]}}.jpg" class="main_img">
+{% endif %}
 <style>
-     label {
+    label {
           padding: 10px;
           background-color:  rgb(239, 237, 237);
           border-radius: 10px;
@@ -21,108 +36,9 @@
      #label_cont{
           margin: 30px 0px 20px 0px;
      }
-     .name_container{
-          max-width: 750px;
-          width: 100vw;
-          border-top: solid;
-          border-width: 1px;
-     }
-     img{
-          margin-top: -10px;
-          width: 100vw;
-          height: auto;
-          min-height: 50px;
-          max-width: 750px;
-          margin-bottom: 30px;
-     }
-     .container{
-          max-width: 750px;
-          display: flex;
-          border-top: solid;
-          border-width: 1px;
-     }
-     html {
-          scroll-behavior: smooth;
-     }
-     .a{
-          margin-left: 55px;
-     }
-     .div{
-          display: block;
-          width: 100vw;
-          height: auto;
-          min-height: 50px;
-          max-width: 750px;
-          padding: 20px 20px 20px 20px;
-          text-align: center;
-          font-size: 20px;
-          word-wrap: break-word;
-     }
-     .react{
-          height: 50px;
-          width: 50vw;
-          align-self: center;
-          max-width: 345px;
-          text-align: center;
-          display: block;
-          border-right: solid;
-          border-width: 1px;
-          margin-left: 10px;
-     }
-     .comment{
-          height: 50px;
-          width: 50vw;
-          align-self: center;
-          max-width: 345px;
-          text-align: center;
-          display: block;
-     }
 </style>
-<script>
-    function get_int(input){
-         num = ""
-        for (let i = 0; i < input.length; i++) {
-            if (input[i]== "🖤"){
-                break
-            } else{
-                num += input[i]
-            }
-        }
-        return parseInt(num)
-     }
-     function like(input){
-          let box = document.getElementById(input)
 
-          if (box.getAttribute('value') == "True") {
-               box.innerHTML = (get_int(box.textContent) - 1) + "🖤"
-               box.setAttribute('value', "False")
-               let url = window.location.origin
-               let request = new XMLHttpRequest();
-               let body = document.querySelector('#body');
-               request.open("GET", url + "/unlike/" + input);
-               request.send();
-
-          } else {
-               box.setAttribute('value', "True")
-               box.innerHTML = (get_int(box.textContent) + 1) + "❤️"
-               let url = window.location.origin
-               let request = new XMLHttpRequest();
-               let body = document.querySelector('#body');
-               request.open("GET", url + "/like/" + input);
-               request.send();
-
-          }
-     }
-</script>
-<a class="a" href="/profile/{{current_post[0]}}">{{current_post[0]}}</a>
-<div class="div">
-     {{current_post[1]}}
-</div>
-{% if current_post[3] == "True" %}
-     <img src="/static/{{current_post[4]}}.jpg" class="main_img">
-{% endif %}
-
-<form action="/comment/{{current_post[2]}}" style="margin-bottom: 30px;" method="post" enctype="multipart/form-data">
+<form action="/comment/{{current_post[2]}}" style="margin-bottom: 30px; margin-top: 40px;" method="post" enctype="multipart/form-data">
      <center>
           <textarea class="btn btn-outline-light" name="comment" maxlength="1000" style="padding: 10px; width:500px; height: 200px; border-radius: 10px;"></textarea>
      </center>
@@ -133,13 +49,18 @@
           </div>
      </center>
      <center>
-          <button  type="submit" id='button' class="btn btn-outline-light" data-mdb-ripple-color="dark" style="font-size: 60px; color: black; border: 0ch; margin-bottom: 2%; border-radius: 10px 10px 10px 10px;  width: 200px; height: 50px;">Comment</button>
+          <button type="submit" id='button' onclick="block()" class="btn btn-outline-light" data-mdb-ripple-color="dark" style="font-size: 60px; color: black; border: 0ch; margin-bottom: 2%; border-radius: 10px 10px 10px 10px;  width: 200px; height: 50px;">Comment</button>
      </center>
 </form>
 
 {% for i in comments %}
 <div class="name_container">
-     <a class="a" href="/profile/{{i[2]}}">{{i[2]}}</a>
+    <a class="a" href="/profile/{{i[2]}}" style="display: inline-flex">
+        <img src="/static/favicon.ico" style="width: 50px; border-radius: 25px; margin-top: 20px; margin-left: 0px">
+        <div style="margin-left: 10px; margin-top: 30px;">
+            {{i[2]}}
+        </div>
+    </a>
 </div>
      <div class="div">
           {{i[3]}}

@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<link rel="stylesheet" href="/static/security.css">
+{% if error != "" %}
+    <center><p style="width: 500px; height: 50px; border-radius: 15px; text-align: center; background-color: rgba(255, 134, 134, 0.9); word-wrap: break-word;">{{error}}</p></center>
+{% endif %}
+<form action="/security" method="post">
+
+     <center><b>Security Questions</b></center>
+     {% if questions == []%}
+          <center>
+               <h2>Question 1</h2>
+               <textarea name="q0" maxlength="1000" required class="question"></textarea>
+               <h2>Answer 1</h2>
+               <textarea name="a0" maxlength="1000" required class="question"></textarea>
+               <h2>Question 2</h2>
+               <textarea name="q1" maxlength="1000" required class="question"></textarea>
+               <h2>Answer 2</h2>
+               <textarea name="a1" maxlength="1000" required class="question"></textarea>
+               <h2>Question 3</h2>
+               <textarea name="q2" maxlength="1000" required class="question"></textarea>
+               <h2>Answer 3</h2>
+               <textarea name="a2" maxlength="1000" required class="question"></textarea>
+          </center>
+     {% else %}
+          {% for i in range(3) %}
+          <center>
+               <h2>Question {{i + 1}}</h2>
+               <textarea name="q{{i}}" maxlength="1000" required class="question">{{questions[i].split("-->")[0]}}</textarea>
+               <h2>Answer {{i + 1}}</h2>
+               <textarea name="a{{i}}" maxlength="1000" required class="question">{{questions[i].split("-->")[1]}}</textarea>
+          </center>
+          {% endfor %}
+     {% endif %}
+     <center>
+          <input type="password" required placeholder="Password" name="password" style="padding: 10px; width:500px; height: 40px; border-radius: 10px; margin-bottom: 20px; margin-top: 20px;">
+     </center>
+     <center>
+          <button  type="submit" id='button' class="btn btn-outline-light" data-mdb-ripple-color="dark" style="font-size: 60px; color: black; border: 0ch; margin-bottom: 2%; border-radius: 10px 10px 10px 10px;  width: 200px; height: 50px;">Update Questions</button>
+     </center>
+
+</form>
+
+{% endblock %}

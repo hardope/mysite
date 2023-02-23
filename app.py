@@ -123,6 +123,7 @@ def c_username():
             query_db(f"UPDATE posts SET username = '{new_username}' WHERE username == '{username}'")
             query_db(f"UPDATE likes SET username = '{new_username}' WHERE username == '{username}'")
             query_db(f"UPDATE comments SET username = '{new_username}' WHERE username == '{username}'")
+            query_db(f"UPDATE security SET username = '{new_username}' WHERE username == '{username}'")
             try:
                 # rename picture to new username if it exists
                 os.rename(f"/home/Hardope/mysite/static/{username}.jpg", f"/home/Hardope/mysite/static/{new_username}.jpg")
@@ -544,6 +545,51 @@ def unlike(query):
     username = session['messenger']
     query_db(f"DELETE FROM likes WHERE id == {int(query)} AND username == '{username}'")
     return "unliked"
+
+@app.route("/security", methods=['POST', 'GET'])
+def security():
+    if not session.get("messenger"):
+        return redirect("/login")
+    if auth(session['messenger']) is not True:
+        return redirect("/login")
+    else:
+        if request.method == "POST":
+            error = ""
+            q0 = request.form.get("q0").strip()
+            a0 = request.form.get("a0").strip()
+            q1 = request.form.get("q1").strip()
+            a1 = request.form.get("a1").strip()
+            q2 = request.form.get("q2").strip()
+            a2 = request.form.get("a2").strip()
+            password = request.form.get("password").strip()
+            check = query_db(f"SELECT password FROM user WHERE username = '{session['messenger']}'")[0][0]
+            if password == check:
+                pass
+            else:
+                error = "Invalid Password"
+                questions = [f"{q0}-->{a0}", f"{q1}-->{a1}", f"{q2}-->{a2}"]
+                return render_template("security.html",
+                    questions=questions,
+                    error=error,
+                    username=session['messenger'])
+            try:
+                a = query_db(f"SELECT * FROM security WHERE username == '{session['messenger']}'")
+                a = a[0]
+                query_db(f"UPDATE security SET q1 = '{q0}-->{a0}', q2 = '{q1}-->{a1}', q3 = '{q2}-->{a2}' WHERE username == '{session['messenger']}'")
+            except:
+                query_db(f"INSERT INTO security VALUES ('{session['messenger']}', '{q0}-->{a0}', '{q1}-->{a1}', '{q2}-->{a2}')")
+            return redirect(f"/me/{session['messenger']}")
+        else:
+            questions = query_db("SELECT * FROM security WHERE username == '{}'".format(session['messenger']))
+            try:
+                questions = list(questions[0])
+                questions.pop(0)
+            except:
+                questions = []
+            return render_template("security.html",
+                questions=questions,
+                error="",
+                username=session['messenger'])
 
 # fetch likes from database
 def likes(query):
