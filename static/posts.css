@@ -2,7 +2,8 @@
     max-width: 750px;
     width: 100vw;
     border-top: solid;
-    border-width: 1px;
+    border-color: rgb(194, 194, 194);
+    border-width: 3px;
 }
 img{
     margin-top: -10px;
@@ -15,6 +16,7 @@ img{
     max-width: 750px;
     display: flex;
     border-top: solid;
+    border-color: rgb(194, 194, 194);
     border-width: 1px;
 }
 html {
@@ -43,6 +45,7 @@ html {
     text-align: center;
     display: block;
     border-right: solid;
+    border-color: rgb(194, 194, 194);
     border-width: 1px;
     margin-left: 10px;
 }
