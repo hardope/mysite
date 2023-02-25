@@ -1,4 +1,6 @@
 let react = ""
+
+/* Load and populate page */
 function load() {
     let a = 1
     let url = window.location.origin

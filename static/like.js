@@ -1,7 +1,10 @@
+/* Get the count of likes on input */
+
 function get_int(input){
     return parseInt(input.slice(0,-1));
 }
 
+/* Like or unlike post */
 function like(input){
     let box = document.getElementById(input)
 

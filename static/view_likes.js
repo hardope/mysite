@@ -1,16 +1,22 @@
+/* Function to pop up view to display likes for a specific post */
+
 function view_likes(input) {
     let a = 0
     let viewer = document.getElementById("like_viewer")
     let viewer_body = document.getElementById("viewer_body")
+
+    /* Display Box */
     viewer.style.display = "block"
     let url = window.location.origin
     let request = new XMLHttpRequest();
+    /* Fetch List of users */
     request.open("GET", url + "/view_likes/" + input);
     request.send();
     request.onload = () => {
-      if (request.status === 200) {
+        if (request.status === 200) {
             viewer_body.innerHTML = ""
            for (let obj of JSON.parse(request.response)) {
+                /* Display Users */
                 var v_cont = document.createElement('div')
                 v_cont.setAttribute('class', 'v_cont')
                 var name_link = document.createElement('a')
@@ -30,7 +36,8 @@ function view_likes(input) {
 
                 a+=1
             }
-           if (a == 0) {
+            /* If there are no likes */
+            if (a == 0) {
                 let viewer = document.getElementById("viewer_body")
                 let no_like = document.createElement('p')
                 no_like.textContent = 'No Likes Yet'
@@ -39,6 +46,7 @@ function view_likes(input) {
         }
     }
 }
+/* Close Pop Up */
 function close_likes() {
     let viewer = document.getElementById("like_viewer")
     let viewer_body = document.getElementById("viewer_body")
