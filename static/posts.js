@@ -61,6 +61,12 @@ function load() {
                 comment.textContent = obj[6] + ' 💬';
                 link.appendChild(comment)
                 container.appendChild(link)
+                var v_like = document.createElement('p')
+                v_like.setAttribute('class', 'v_like')
+                v_like.setAttribute('style', 'inline')
+                v_like.textContent = "📊";
+                v_like.setAttribute('onclick', 'view_likes(' + obj[0] + ')')
+                container.appendChild(v_like)
                 body.appendChild(container)
 
                 a+=1

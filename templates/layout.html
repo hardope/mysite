@@ -68,6 +68,8 @@ a:active { text-decoration: none; color: rgb(27, 153, 207); !important}
 
 </style>
 <script>
+document.addEventListener('click', close_likes())
+document.addEventListener('click', closeNav())
 document.addEventListener('DOMContentLoaded', function(){
     window.addEventListener('offline', (e) => {
     // User is offline

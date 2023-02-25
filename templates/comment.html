@@ -14,6 +14,14 @@ function validate() {
 </script>
 <link rel="stylesheet" href="/static/posts.css">
 <script src="/static/like.js"></script>
+<script src="/static/view_likes.js"></script>
+
+    <div id="like_viewer">
+        <span id="close" onclick="close_likes()">&times;</span>
+        <div id="viewer_body">
+
+        </div>
+    </div>
 
 <a class="a" href="/profile/{{current_post[0]}}" style="display: inline-flex">
     <img src="/static/favicon.ico" style="width: 50px; border-radius: 25px; margin-top: 20px; margin-left: 0px">
@@ -71,6 +79,7 @@ function validate() {
      <div class="container">
           <p class="react" value="{{i[6]}}" id="{{i[1]}}" onclick="like({{i[1]}})">{{i[5]}}</p>
           <a href="/comment/{{i[1]}}"><p class="comment">{{i[7]}} 💬</p></a>
+          <p class="v_like" onclick="view_likes({{i[1]}})">📊</p>
      </div>
 {% endfor %}
 {% endblock %}

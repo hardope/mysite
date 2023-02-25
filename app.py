@@ -591,6 +591,11 @@ def security():
                 error="",
                 username=session['messenger'])
 
+@app.route("/view_likes/<query>")
+def view_likes(query):
+    likes = query_db(f"SELECT username FROM likes WHERE id == {int(query)}")
+    return jsonify(likes)
+
 # fetch likes from database
 def likes(query):
     username = session['messenger']

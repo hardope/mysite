@@ -6,6 +6,14 @@
 {% block body %}
 <script src="/static/like.js"></script>
 <link rel="stylesheet" href="/static/posts.css">
+<script src="/static/view_likes.js"></script>
+
+    <div id="like_viewer" style="margin-top: 30px;">
+        <span id="close" onclick="close_likes()">&times;</span>
+        <div id="viewer_body">
+
+        </div>
+    </div>
     <center>
         {% if img == 0 %}
             <img src="/static/favicon.ico" style="border-radius: 50%; width:20%;">
@@ -52,6 +60,7 @@
         <div class="container">
              <p class="react" value="{{i[5]}}" id="{{i[0]}}" onclick="like({{i[0]}})">{{i[4]}}</p>
              <a href="/comment/{{i[0]}}"><p class="comment">{{i[6]}} 💬</p></a>
+             <p class="v_like" onclick="view_likes({{i[0]}})">📊</p>
         </div>
     {% endfor %}
 {% endblock %}}
