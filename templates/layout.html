@@ -67,6 +67,15 @@ a:active { text-decoration: none; color: rgb(27, 153, 207); !important}
 
 
 </style>
+<div id="notify">
+  <div>
+    <span id="close" onclick="close_notify()" style="margin-top: -30px;">&times;</span>
+    <h3 id="notify_header"></h3>
+  </div>
+  <div id="notify_body">
+
+  </div>
+</div>
 <script>
 document.addEventListener('click', close_likes())
 document.addEventListener('click', closeNav())
@@ -93,6 +102,10 @@ function up(){
 
 <html style="font-size: 16px;" lang="en">
     <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/notify.css">
+    <link rel="stylesheet" href="/static/posts.css">
+    <script src="/static/notify.js"></script>
     <link rel="icon" href="/static/icon.jpg" media="screen">
     <meta name="google-site-verification" content="VreH62dt2UzMQRKByNADiGaWM8KW4UWAmPJhnavGlTU" />
     <meta name="viewport" content="width=device-width, initial-scale=0.5">
@@ -140,7 +153,10 @@ function up(){
         </form>
         <nav class="u-menu u-menu-one-level u-offcanvas u-menu-1">
           <div class="u-custom-menu">
-            <button style="margin-left: 300%;" class="openbtn" onclick="openNav()" >&#9776;</button>
+              <div style="display: inline-flex;">
+                <button class="openbtn" style="margin-left: 200%; background-color: white; border: none;" value="{{username}}" id="trig_not" onclick="notify()" ><i class="fa fa-bell" id="bell" style="font-size:80px;color:black"></i></button>
+                <button style="margin-left: 10%;" class="openbtn" onclick="openNav()" >&#9776;</button>
+            </div>
           </div>
         </nav>
         <br>

@@ -20,6 +20,10 @@ app.secret_key = "Messenger"
 def site():
     return render_template("sitemap.xml")
 
+@app.route("/layout")
+def layout():
+    return render_template("mylayout.html")
+
 # Display and store new comments
 # Display and store new comments
 @app.route("/comment/<query>", methods=["GET", "POST"])
@@ -456,6 +460,19 @@ def api(query):
             query_db(f"UPDATE read SET id = {length} WHERE sender == '{session['messenger']}' AND recipient == '{query}'")
         else:
             query_db(f"INSERT INTO read VALUES({length}, '{session['messenger']}', '{query}')")
+        notifications = get_notifications(session['messenger'])
+        try:
+            notifications.remove(query)
+        except:
+            pass
+        new_notify = ""
+        for val in notifications:
+            new_notify+=(f"{val},")
+        try:
+            query_db(f"SELECT * FROM notification WHERE username == '{session['messenger']}'")[0]
+            query_db(f"UPDATE notification SET new == '{new_notify}' WHERE username == '{session['messenger']}'")
+        except:
+            query_db(f"INSERT INTO notification VALUES ('{session['messenger']}', '{new_notify}')")
         return jsonify(messages)
 
 #log in
@@ -508,7 +525,6 @@ def register():
     else:
         return render_template("register.html", error="")
 
-# send new message
 @app.route("/messages/<query>", methods=['POST'])
 def messages(query):
     if not session.get("messenger"):
@@ -520,12 +536,28 @@ def messages(query):
         recipient = query.strip()
         message = request.form.get('message').strip()
         message = message.replace("'", "''")
+
         for i in ['#', '?', '/']:
             message.replace(i, f"/n{i}")
         id = query_db("SELECT id FROM chats ORDER BY id DESC LIMIT 1")[0][0] + 1
         query_db("INSERT INTO chats VALUES ({0}, '{1}', '{2}', '{3}', CURRENT_TIMESTAMP)".format(id, session['messenger'], recipient, message))
+        length = query_db(f"SELECT COUNT (*) FROM chats WHERE sender == '{session['messenger']}' AND recipient == '{query}' OR recipient == '{session['messenger']}' AND sender == '{query}'")[0][0]
+        try:
+            query_db(f"UPDATE read SET id = {length} WHERE sender == '{session['messenger']}' AND recipient == '{query}'")
+        except:
+            query_db(f"INSERT INTO read VALUES({length}, '{session['messenger']}', '{query}')")
+        notifications = get_notifications(recipient)
+        notifications.append(session['messenger'])
+        notifications = list(set(notifications))
+        new_notify = ""
+        for val in notifications:
+            new_notify+=(f"{val},")
+        try:
+            query_db(f"SELECT * FROM notification WHERE username == '{recipient}'")[0]
+            query_db(f"UPDATE notification SET new == '{new_notify}' WHERE username == '{recipient}'")
+        except:
+            query_db(f"INSERT INTO notification VALUES ('{recipient}', '{new_notify}')")
         return "Sent"
-
 # logout
 @app.route("/logout", methods=['POST', 'GET'])
 def logout():
@@ -545,6 +577,11 @@ def unlike(query):
     username = session['messenger']
     query_db(f"DELETE FROM likes WHERE id == {int(query)} AND username == '{username}'")
     return "unliked"
+
+@app.route("/notification/<query>")
+def notification(query):
+    return (jsonify(get_notifications(query)))
+
 
 @app.route("/security", methods=['POST', 'GET'])
 def security():
@@ -643,6 +680,22 @@ def get_id():
             file.write(f"{id}")
 
     return id
+
+def get_notifications(query):
+    try:
+        notify = query_db(f"SELECT new FROM notification WHERE username == '{query}'")[0][0]
+        notify = notify.split(",")
+        notify.pop()
+        notifications = []
+        for i in list(notify):
+            notifications.append(i)
+    except:
+        notifications = []
+    return notifications
+
+def count_messages(user1, user2):
+    return (query_db(f"SELECT COUNT (*) FROM chats WHERE sender == '{user1}' AND recipient == '{user2}' OR recipient == '{user1}' AND sender == '{user2}'")[0][0])
+
 
 def get_pic():
     with open("/home/Hardope/mysite/pic.txt") as file:
