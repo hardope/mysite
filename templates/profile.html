@@ -56,6 +56,10 @@
             <a href="/static/{{i[0]}}.jpg">
                 <img src="/static/{{i[0]}}.jpg">
             </a>
+        {% else %}
+            {% if i[7] == "video" %}
+                <video src="/static/{{i[0]}}.mp4" controls loop preload="auto"></video>
+            {% endif %}
         {% endif %}
         <div class="container">
              <p class="react" value="{{i[5]}}" id="{{i[0]}}" onclick="like({{i[0]}})">{{i[4]}}</p>

@@ -12,6 +12,13 @@ img{
     min-height: 50px;
     max-width: 750px;
 }
+video{
+    margin-top: -10px;
+    width: 100vw;
+    height: auto;
+    min-height: 50px;
+    max-width: 750px;
+}
 .container{
     max-width: 750px;
     display: flex;

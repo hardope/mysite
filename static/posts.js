@@ -37,13 +37,21 @@ function load() {
                 tag.textContent = obj[2];
                 tag.setAttribute('class', 'div')
                 body.appendChild(tag);
-                if (obj[7] === "True"){
+                if (obj[7] === "pic"){
                     let link = document.createElement('a');
                     link.setAttribute("href", '/static/'+ obj[0] +'.jpg')
                     var pic = document.createElement('img');
                     pic.setAttribute('src', '/static/'+ obj[0] +'.jpg')
                     link.appendChild(pic)
                     body.appendChild(link)
+                } else if (obj[7] === "video") {
+                    var video = document.createElement("video")
+                    video.setAttribute('src', "/static/" + obj[0] + ".mp4")
+                    video.setAttribute('controls', "")
+                    video.setAttribute('prelolad', "metadata")
+
+                    video.setAttribute('loop', "")
+                    body.appendChild(video)
                 }
                 var container = document.createElement('div');
                 container.setAttribute('class', 'container')

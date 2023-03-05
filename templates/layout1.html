@@ -64,7 +64,12 @@ a:active { text-decoration: none; color: rgb(27, 153, 207); !important}
 .openbtn:hover {
   background-color: rgb(234, 234, 234);
 }
-
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
 
 </style>
 <script src="/static/notify.js"></script>
@@ -167,10 +172,11 @@ document.addEventListener('click', closeNav())
           </div>
         </nav>
         <br>
-        <a href="/" style="margin-right: 10px;">Home</a>
-        <a href="/chats"  style="margin-right: 10px;">Chats</a>
-        <a href="/users"  style="margin-right: 10px;">New Chat</a>
-        <a href="/profile/{{username}}">Profile</a>
+        <center>
+          <a href="/chats"  style="margin-right: 10px;"><img src="/static/chat.png" style="width: 50px; border-radius: 25px;"></a>
+          <a href="/users"  style="margin-right: 10px;"><img src="/static/new.png" style="width: 55px; border-radius: 25px;"></a>
+          <a href="/profile/{{username}}"><img src="/static/profile.png" style="width: 50px; border-radius: 25px;"></a>
+        </center>
         <div id="mySidebar" class="sidebar" style="position: absolute;">
           <br>
           <br>
@@ -190,13 +196,4 @@ document.addEventListener('click', closeNav())
         {% block body %}
         {% endblock %}
       </div>
-
-    <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-2dea" style="background-color: white;"><div class="u-clearfix u-sheet u-sheet-1">
-      <button onclick="up()" style="border-radius: 25px; width: 40px; background-color: rgb(33, 173, 243); font-size: 30px !important;">⬆</button>
-        <p class="u-small-text u-text u-text-variant u-text-1" style="color: black;">Copyright &#169; Click Chat</p>
-        <p class="u-small-text u-text u-text-variant u-text-1" style="color: black;">Developed And Designed By Opeoluwa Adeyeri</p>
-        <a href="/" class="u-image u-logo u-image-1" data-image-width="256" data-image-height="256">
-          <img src="/static/icon.png" class="u-logo-image u-logo-image-1">
-        </a>
-      </div></footer>
 </body></html>

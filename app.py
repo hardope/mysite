@@ -25,7 +25,6 @@ def layout():
     return render_template("mylayout.html")
 
 # Display and store new comments
-# Display and store new comments
 @app.route("/comment/<query>", methods=["GET", "POST"])
 def comment(query):
     if not session.get("messenger"):
@@ -46,8 +45,11 @@ def comment(query):
             p_comments = query_db(f"SELECT COUNT(*) FROM comments WHERE pid == {new[1]}")
             new.append(p_comments[0][0])
             pic_list = get_pic()
+            video_list = get_vid()
             if f"{new[1]}" in pic_list:
-                new.append("True")
+                new.append("pic")
+            elif f"{new[1]}" in video_list:
+                new.append("video")
             else:
                 new.append("False")
             new_comments.append(new)
@@ -56,17 +58,23 @@ def comment(query):
             # If current post is a main post
             c_post = query_db(f"SELECT * FROM posts where id == {pid}")[0]
             pic_list = get_pic()
+            video_list = get_vid()
             if f"{pid}" in pic_list:
-                pic = "True"
+                pic = "pic"
+            elif f"{pid}" in video_list:
+                pic = "video"
             else:
                 pic = "False"
             current_post = [c_post[1], c_post[2], c_post[0], pic, pid]
         except:
             pic_list = get_pic()
+            video_list = get_vid()
             #if current post is a comment
             c_post = query_db(f"SELECT * FROM comments WHERE id = {pid}")[0]
             if f"{pid}" in pic_list:
-                pic = "True"
+                pic = "pic"
+            elif f"{pid}" in video_list:
+                pic = "video"
             else:
                 pic = "False"
             current_post = [c_post[2], c_post[3], c_post[1], pic, pid]
@@ -88,7 +96,17 @@ def comment(query):
                 file.write(f"{pid}\n")
             value = 1
         except:
-            pass
+            try:
+                # Collect and update picture if provided
+                file = request.files['video']
+                if not file:
+                    raise ValueError
+                file = file.save(f"/home/Hardope/mysite/static/{pid}.mp4")
+                with open("/home/Hardope/mysite/video.txt", "a") as file:
+                    file.write(f"{pid}\n")
+                value = 1
+            except:
+                pass
         if new_comment != "":
             value = 1
         if value != 0:
@@ -244,18 +262,22 @@ def detail(query):
         p_comments = query_db(f"SELECT COUNT(*) FROM comments WHERE pid == {new[0]}")
         new.append(p_comments[0][0])
         pic_list = get_pic()
+        video_list = get_vid()
         if f"{new[0]}" in pic_list:
-            new.append("True")
+            new.append("pic")
+        elif f"{new[0]}" in video_list:
+            new.append("video")
         else:
             new.append("False")
         f_posts.append(new)
     try:
         # check if profile picture is present
-        with open(f"/home/Hardope/mysite/static/{pic}", "r") as file:
+        with open(f"static/{pic}", "r") as file:
             img = 1
     except:
         img = 0
     return render_template('profile.html', username=session['messenger'], data=data, user=query, pic=pic, img=img, posts=f_posts)
+
 
 # About website
 @app.route("/about")
@@ -403,6 +425,7 @@ def post(query):
         posts = query_db("SELECT * FROM posts ORDER BY id DESC")
         new_post = []
         pic_list = get_pic()
+        video_list = get_vid()
         for i in posts:
             new = list(i)
             value = likes(i[0])
@@ -411,7 +434,9 @@ def post(query):
             comments = query_db(f"SELECT COUNT(*) FROM comments WHERE pid = {new[0]}")
             new.append(comments[0][0])
             if f"{new[0]}" in pic_list:
-                new.append("True")
+                new.append("pic")
+            elif f"{new[0]}" in video_list:
+                new.append("video")
             else:
                 new.append("False")
             new_post.append(new)
@@ -436,7 +461,17 @@ def new_post():
             file.write(f"{pid}\n")
         value = 1
     except:
-        pass
+        try:
+            # Collect and update picture if provided
+            file = request.files['video']
+            if not file:
+                raise ValueError
+            file = file.save(f"/home/Hardope/mysite/static/{pid}.mp4")
+            with open("/home/Hardope/mysite/video.txt", "a") as file:
+                file.write(f"{pid}\n")
+            value = 1
+        except:
+            pass
     if post != "":
         value = 1
     if value != 0:
@@ -699,6 +734,15 @@ def count_messages(user1, user2):
 
 def get_pic():
     with open("/home/Hardope/mysite/pic.txt") as file:
+
+        data = file.read()
+        data = data.replace("\n", " ")
+        data = data.split(" ")
+        data = data[:-1]
+        return data
+
+def get_vid():
+    with open("/home/Hardope/mysite/video.txt") as file:
 
         data = file.read()
         data = data.replace("\n", " ")
