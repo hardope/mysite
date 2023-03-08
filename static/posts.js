@@ -34,7 +34,11 @@ function load() {
                 time.textContent = get_time(obj[3]);
                 body.appendChild(time);
                 var tag = document.createElement('div');
-                tag.textContent = obj[2];
+                for (let line of obj[2].split("\n")){
+                    let par = document.createElement('div')
+                    par.textContent = line
+                    tag.appendChild(par)
+                }
                 tag.setAttribute('class', 'div')
                 body.appendChild(tag);
                 if (obj[7] === "pic"){

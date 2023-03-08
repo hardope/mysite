@@ -1,71 +1,5 @@
 <!DOCTYPE html>
 <link rel="icon" href="/static/icon.png" style="border-radius: 25px" type="image/x-icon">
-<style>
-html *
-{
-   font-size: 20px !important;
-   scroll-behavior: smooth !important;
-}
-
-.sidebar {
-  height: 0%; /* 100% Full-height */
-  width: 100%; /* 0 width - change this with JavaScript */
-  margin-left: 10px;
-  max-width: 800px;
-  margin-right: 20px;
-  position:inherit; /* Stay in place */
-  z-index: 1; /* Stay on top */
-  top: 0;
-  left: -10;
-  background-color: rgba(214, 214, 214, 0.9);
-  overflow-x: hidden;
-  padding-top: 0px;
-  transition: 1s;
-  border-radius: 15px;
-}
-
-a:link { text-decoration: none; color: rgb(27, 153, 207); !important}
-a:visited { text-decoration: none; color: rgb(27, 153, 207); !important}
-a:active { text-decoration: none; color: rgb(27, 153, 207); !important}
-/* The sidebar links */
-.sidebar a {
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 25px;
-  display: block;
-  transition: 0.3s;
-}
-/* When you mouse over the navigation links, change their color */
-.sidebar a:hover {
-  color: #f1f1f1;
-}
-
-/* Position and style the close button (top right corner) */
-.sidebar .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 300x;
-  margin-left: 0px;
-}
-
-/* The button used to open the sidebar */
-.openbtn {
-  position:sticky;
-  font-size: 30px;
-  cursor: pointer;
-  background-color: white;
-  color: #111;
-  padding: 10px 15px;
-  border: none;
-}
-
-.openbtn:hover {
-  background-color: rgb(234, 234, 234);
-}
-
-
-</style>
 <script>
 document.addEventListener('click', close_likes())
 document.addEventListener('click', closeNav())
@@ -91,6 +25,7 @@ function up(){
 </script>
 
 <html style="font-size: 16px;" lang="en"><head>
+    <link rel="stylesheet" href="/static/nav_bar.css">
     <link rel="icon" href="/static/icon.jpg" media="screen">
     <meta name="google-site-verification" content="VreH62dt2UzMQRKByNADiGaWM8KW4UWAmPJhnavGlTU" />
     <meta name="viewport" content="width=device-width, initial-scale=0.5">

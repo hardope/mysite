@@ -1,72 +1,5 @@
 <!DOCTYPE html>
 <link rel="icon" href="/static/icon.png" type="image/x-icon">
-<style>
-html *
-{
-   font-size: 20px !important;
-   scroll-behavior: smooth !important;
-}
-
-.sidebar {
-  height: 0%; /* 100% Full-height */
-  width: 100%; /* 0 width - change this with JavaScript */
-  margin-left: 10px;
-  max-width: 800px;
-  margin-right: 20px;
-  position:inherit; /* Stay in place */
-  z-index: 1; /* Stay on top */
-  top: 0;
-  left: -10;
-  background-color: rgba(214, 214, 214, 0.9);
-  overflow-x: hidden;
-  padding-top: 0px;
-  transition: 1s;
-  border-radius: 15px;
-}
-
-a:link { text-decoration: none; color: rgb(27, 153, 207); !important}
-a:visited { text-decoration: none; color: rgb(27, 153, 207); !important}
-a:active { text-decoration: none; color: rgb(27, 153, 207); !important}
-/* The sidebar links */
-.sidebar a {
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 25px;
-  display: block;
-  transition: 0.3s;
-}
-
-/* When you mouse over the navigation links, change their color */
-.sidebar a:hover {
-  color: #f1f1f1;
-}
-
-/* Position and style the close button (top right corner) */
-.sidebar .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 300x;
-  margin-left: 0px;
-}
-
-/* The button used to open the sidebar */
-.openbtn {
-  position:sticky;
-  font-size: 30px;
-  cursor: pointer;
-  background-color: white;
-  color: #111;
-  padding: 10px 15px;
-  border: none;
-}
-
-.openbtn:hover {
-  background-color: rgb(234, 234, 234);
-}
-
-
-</style>
 <div id="notify">
   <div>
     <span id="close" onclick="close_notify()" style="margin-top: -30px;">&times;</span>
@@ -104,6 +37,7 @@ function up(){
     <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/static/notify.css">
+    <link rel="stylesheet" href="/static/nav_bar.css">
     <link rel="stylesheet" href="/static/posts.css">
     <script src="/static/notify.js"></script>
     <link rel="icon" href="/static/icon.jpg" media="screen">
@@ -169,13 +103,13 @@ function up(){
           <br>
           <br>
           <a href="javascript:void(0)" style="font-size: 300%" class="closebtn" onclick="closeNav()">&#x2715;</a>
-          <a class="u-button-style u-nav-link" href="/">Home</a>
-          <a class="u-button-style u-nav-link" href="/chats">Chats</a>
-          <a class="u-button-style u-nav-link" href="/users">New Chat</a>
-          <a class="u-button-style u-nav-link" href="/news">Announcements</a></li>
-          <a class="u-button-style u-nav-link" href="/about">About</a></li>
-          <a class="u-button-style u-nav-link" href="/profile/{{username}}">Profile</a>
-          <a href="/logout" style="margin-top: 20px" class="u-border-2 u-border-hover-palette-1-base u-border-palette-1-base u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-1">Logout</a>
+          <div class="nav_link"><a href="/">Home</a></div>
+          <div class="nav_link"><a href="/chats">Chats</a></div>
+          <div class="nav_link"><a href="/users">New Chat</a></div>
+          <div class="nav_link"><a href="/about">About</a></div>
+          <div class="nav_link"><a href="/profile/{{username}}">Profile</a></div>
+          <div class="nav_link"><a href="/logout">Logout</a></div>
+          <div class="nav_link"><a href="/static/ClickChat.apk">Download Mobile App</a></div>
         </div>
       </div></header>
 
