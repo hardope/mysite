@@ -22,8 +22,8 @@ function load() {
                 name_link.appendChild(pic)
                 var name = document.createElement('div');
                 name.setAttribute('class', 'p')
-                name.textContent = obj[1];
-                name_link.setAttribute('href', "/profile/" + obj[1])
+                name.textContent = obj.name;
+                name_link.setAttribute('href', "/profile/" + obj.name)
                 name.setAttribute('style', 'margin-left: 10px; margin-top: 30px;')
                 name_link.appendChild(name)
                 name_container.appendChild(name_link)
@@ -31,26 +31,26 @@ function load() {
                 var time = document.createElement('p');
                 time.setAttribute('style', 'margin-top: -10px; margin-left: 30px; font-size: 15px !important;')
                 time.setAttribute('class', 'a')
-                time.textContent = get_time(obj[3]);
+                time.textContent = get_time(obj.time);
                 body.appendChild(time);
                 var tag = document.createElement('div');
-                for (let line of obj[2].split("\n")){
+                for (let line of obj.content.split("\n")){
                     let par = document.createElement('div')
                     par.textContent = line
                     tag.appendChild(par)
                 }
                 tag.setAttribute('class', 'div')
                 body.appendChild(tag);
-                if (obj[7] === "pic"){
+                if (obj.media === "pic"){
                     let link = document.createElement('a');
-                    link.setAttribute("href", '/static/'+ obj[0] +'.jpg')
+                    link.setAttribute("href", '/static/'+ obj.id +'.jpg')
                     var pic = document.createElement('img');
-                    pic.setAttribute('src', '/static/'+ obj[0] +'.jpg')
+                    pic.setAttribute('src', '/static/'+ obj.id +'.jpg')
                     link.appendChild(pic)
                     body.appendChild(link)
-                } else if (obj[7] === "video") {
+                } else if (obj.media === "video") {
                     var video = document.createElement("video")
-                    video.setAttribute('src', "/static/" + obj[0] + ".mp4")
+                    video.setAttribute('src', "/static/" + obj.id + ".mp4")
                     video.setAttribute('controls', "")
                     video.setAttribute('prelolad', "metadata")
 
@@ -61,25 +61,25 @@ function load() {
                 container.setAttribute('class', 'container')
                 var react = document.createElement('p')
                 react.setAttribute('class', 'react')
-                react.setAttribute('value', obj[5])
-                react.setAttribute('id', obj[0])
+                react.setAttribute('value', obj.like_value)
+                react.setAttribute('id', obj.id)
                 react.setAttribute('style', 'inline')
-                react.setAttribute('onclick', 'like(' + obj[0] + ')')
-                react.textContent = obj[4];
+                react.setAttribute('onclick', 'like(' + obj.id + ')')
+                react.textContent = obj.likes;
                 container.appendChild(react)
                 var link = document.createElement('a')
-                link.setAttribute('href', '/comment/' + obj[0])
+                link.setAttribute('href', '/comment/' + obj.id)
                 var comment = document.createElement('p')
                 comment.setAttribute('class', 'comment')
                 comment.setAttribute('style', 'inline')
-                comment.textContent = obj[6] + ' 💬';
+                comment.textContent = obj.comments + ' 💬';
                 link.appendChild(comment)
                 container.appendChild(link)
                 var v_like = document.createElement('p')
                 v_like.setAttribute('class', 'v_like')
                 v_like.setAttribute('style', 'inline')
                 v_like.textContent = "📊";
-                v_like.setAttribute('onclick', 'view_likes(' + obj[0] + ')')
+                v_like.setAttribute('onclick', 'view_likes(' + obj.id + ')')
                 container.appendChild(v_like)
                 body.appendChild(container)
 

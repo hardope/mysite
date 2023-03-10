@@ -53,6 +53,7 @@ def comment(query):
             else:
                 new.append("False")
             new_comments.append(new)
+            comments = format_comments(new_comments)
         # fetch current post
         try:
             # If current post is a main post
@@ -65,7 +66,7 @@ def comment(query):
                 pic = "video"
             else:
                 pic = "False"
-            current_post = [c_post[1], c_post[2], c_post[0], pic, pid]
+            current_post = {"name": c_post[1], "content": c_post[2], "media": pic, "id": pid}
         except:
             pic_list = get_pic()
             video_list = get_vid()
@@ -77,9 +78,10 @@ def comment(query):
                 pic = "video"
             else:
                 pic = "False"
-            current_post = [c_post[2], c_post[3], c_post[1], pic, pid]
+            current_post = {"name": c_post[2], "content": c_post[3], "media": pic, "id": pid}
 
-        return render_template("comment.html", username=session['messenger'], comments=new_comments, current_post=current_post)
+        return render_template("comment.html", username=session['messenger'], comments=comments, current_post=current_post)
+
 
     else:
         # collect and store comments from form
@@ -276,7 +278,9 @@ def detail(query):
             img = 1
     except:
         img = 0
+    f_posts = format_posts(f_posts)
     return render_template('profile.html', username=session['messenger'], data=data, user=query, pic=pic, img=img, posts=f_posts)
+
 
 
 # About website
@@ -422,25 +426,9 @@ def post(query):
             return render_template("newpost.html", username=session['messenger'])
         # fetch and parse posts
 
-        posts = query_db("SELECT * FROM posts ORDER BY id DESC")
-        new_post = []
-        pic_list = get_pic()
-        video_list = get_vid()
-        for i in posts:
-            new = list(i)
-            value = likes(i[0])
-            for i in value:
-                new.append(i)
-            comments = query_db(f"SELECT COUNT(*) FROM comments WHERE pid = {new[0]}")
-            new.append(comments[0][0])
-            if f"{new[0]}" in pic_list:
-                new.append("pic")
-            elif f"{new[0]}" in video_list:
-                new.append("video")
-            else:
-                new.append("False")
-            new_post.append(new)
-        return jsonify(new_post)
+        posts = get_posts()
+
+        return jsonify(posts)
 
 # new posts
 @app.route("/new_post", methods=["POST"])
@@ -715,6 +703,63 @@ def get_id():
             file.write(f"{id}")
 
     return id
+
+def get_posts():
+    posts = query_db("SELECT * FROM posts ORDER BY id DESC")
+    new_post = []
+    pic_list = get_pic()
+    video_list = get_vid()
+    for i in posts:
+        new = list(i)
+        value = likes(i[0])
+        for i in value:
+            new.append(i)
+        comments = query_db(f"SELECT COUNT(*) FROM comments WHERE pid = {new[0]}")
+        new.append(comments[0][0])
+        if f"{new[0]}" in pic_list:
+            new.append("pic")
+        elif f"{new[0]}" in video_list:
+            new.append("video")
+        else:
+            new.append("False")
+        new_post.append(new)
+
+    return format_posts(new_post)
+
+def format_posts(inp):
+    data = []
+
+    for i in inp:
+        dicts = {"id": i[0],
+                    "name": i[1],
+                    "content": i[2],
+                    "time": i[3],
+                    "likes": i[4],
+                    "like_value": i[5],
+                    "comments": i[6],
+                    "media": i[7]}
+        data.append(dicts)
+
+    return data
+
+def format_comments(inp):
+    data = []
+
+    for i in inp:
+        dicts = {"pid": i[0],
+                    "id": i[1],
+                    "name": i[2],
+                    "content": i[3],
+                    "time": i[4],
+                    "likes": i[5],
+                    "like_value": i[6],
+                    "comments": i[7],
+                    "media": i[8]}
+        data.append(dicts)
+
+    return data
+
+
 
 def get_notifications(query):
     try:

@@ -42,29 +42,31 @@
     {% endif %}
     {% for i in posts %}
     <div class="name_container">
-        <a class="a" href="/profile/{{i[1]}}" style="display: inline-flex">
+        <a class="a" href="/profile/{{i.name}}" style="display: inline-flex">
             <img src="/static/favicon.ico" style="width: 50px; border-radius: 25px; margin-top: 20px; margin-left: 0px">
             <div style="margin-left: 10px; margin-top: 30px;">
-                {{i[1]}}
+                {{i.name}}
             </div>
         </a>
     </div>
         <div class="div">
-            {{i[2]}}
+            {% for j in i.content.split("\n") %}
+                <div>{{j}}</div>
+            {% endfor %}
         </div>
-        {% if i[7] == "True" %}
-            <a href="/static/{{i[0]}}.jpg">
-                <img src="/static/{{i[0]}}.jpg">
+        {% if i.media == "pic" %}
+            <a href="/static/{{iid}}.jpg">
+                <img src="/static/{{i.id}}.jpg">
             </a>
         {% else %}
-            {% if i[7] == "video" %}
-                <video src="/static/{{i[0]}}.mp4" controls loop preload="auto"></video>
+            {% if i.media == "video" %}
+                <video src="/static/{{i.id}}.mp4" controls loop preload="auto"></video>
             {% endif %}
         {% endif %}
         <div class="container">
-             <p class="react" value="{{i[5]}}" id="{{i[0]}}" onclick="like({{i[0]}})">{{i[4]}}</p>
-             <a href="/comment/{{i[0]}}"><p class="comment">{{i[6]}} 💬</p></a>
-             <p class="v_like" onclick="view_likes({{i[0]}})">📊</p>
+             <p class="react" value="{{i.like_value}}" id="{{i.id}}" onclick="like({{i.id}})">{{i.likes}}</p>
+             <a href="/comment/{{i.id}}"><p class="comment">{{i.comments}} 💬</p></a>
+             <p class="v_like" onclick="view_likes({{i.id}})">📊</p>
         </div>
     {% endfor %}
-{% endblock %}}
+{% endblock %}

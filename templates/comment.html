@@ -32,20 +32,22 @@
         </div>
     </div>
 
-<a class="a" href="/profile/{{current_post[0]}}" style="display: inline-flex">
+<a class="a" href="/profile/{{current_post.name}}" style="display: inline-flex">
     <img src="/static/favicon.ico" style="width: 50px; border-radius: 25px; margin-top: 20px; margin-left: 0px">
     <div style="margin-left: 10px; margin-top: 30px;">
-        {{current_post[0]}}
+        {{current_post.name}}
     </div>
 </a><br>
 <div class="div">
-     {{current_post[1]}}
+    {% for j in current_post.content.split("\n") %}
+        <div>{{j}}</div>
+    {% endfor %}
 </div>
-{% if current_post[3] == "pic" %}
-     <img src="/static/{{current_post[4]}}.jpg" class="main_img">
+{% if current_post.media == "pic" %}
+     <img src="/static/{{current_post.id}}.jpg" class="main_img">
 {% else %}
-     {% if current_post[3] == "video" %}
-          <video src="/static/{{current_post[4]}}.mp4" controls loop preload="auto"></video>
+     {% if current_post.media == "video" %}
+          <video src="/static/{{current_post.id}}.mp4" controls loop preload="auto"></video>
      {% endif %}
 {% endif %}
 <style>
@@ -100,27 +102,29 @@
 
 {% for i in comments %}
 <div class="name_container">
-    <a class="a" href="/profile/{{i[2]}}" style="display: inline-flex">
+    <a class="a" href="/profile/{{i.name}}" style="display: inline-flex">
         <img src="/static/favicon.ico" style="width: 50px; border-radius: 25px; margin-top: 20px; margin-left: 0px">
         <div style="margin-left: 10px; margin-top: 30px;">
-            {{i[2]}}
+            {{i.name}}
         </div>
     </a>
 </div>
      <div class="div">
-          {{i[3]}}
+         {% for j in i.content.split("\n") %}
+            <div>{{j}}</div>
+        {% endfor %}
      </div>
-     {% if i[8] == "pic" %}
-          <img src="/static/{{i[1]}}.jpg" class="c_img">
+     {% if i.media == "pic" %}
+          <img src="/static/{{i.id}}.jpg" class="c_img">
      {% else %}
-          {% if i[8] == "video" %}
-               <video src="/static/{{i[1]}}.mp4" controls loop preload="metadata"></video>
+          {% if i.media == "video" %}
+               <video src="/static/{{i.id}}.mp4" controls loop preload="metadata"></video>
           {% endif %}
      {% endif %}
      <div class="container">
-          <p class="react" value="{{i[6]}}" id="{{i[1]}}" onclick="like({{i[1]}})">{{i[5]}}</p>
-          <a href="/comment/{{i[1]}}"><p class="comment">{{i[7]}} 💬</p></a>
-          <p class="v_like" onclick="view_likes({{i[1]}})">📊</p>
+          <p class="react" value="{{i.like_value}}" id="{{i.id}}" onclick="like({{i.id}})">{{i.likes}}</p>
+          <a href="/comment/{{i.id}}"><p class="comment">{{i.comments}} 💬</p></a>
+          <p class="v_like" onclick="view_likes({{i.id}})">📊</p>
      </div>
 {% endfor %}
 {% endblock %}
